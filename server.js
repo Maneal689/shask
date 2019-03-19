@@ -17,7 +17,7 @@ app.use(
 );
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-//app.use(express.static(__dirname + '/client/dist'));
+app.use(express.static(__dirname + '/client/dist'));
 
 //MiddleWare
 app.use((req, res, next) => {
@@ -25,10 +25,10 @@ app.use((req, res, next) => {
     next();
 });
 
-//app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
-//app.get('*', (req, res) => {
-    //res.sendFile(__dirname + '/client/dist/index.html');
-//});
+app.get('*', (req, res) => {
+    res.sendFile(__dirname + '/client/dist/index.html');
+});
 
 app.listen(port, () => console.log('Listening on port: ', port));
