@@ -45,7 +45,7 @@ async function register(req, res) {
             errList: errReport,
         });
     else {
-        let lastId = await dbUtils.getUserLastId();
+        let lastId = await dbUtils.getUserLastId() + 1;
         bcrypt.hash(req.body.password, 10).then(hash => {
             db.query(
                 'INSERT INTO Users(id_user, username, email, password) VALUES($1, $2, $3, $4)',
