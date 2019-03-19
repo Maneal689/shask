@@ -110,6 +110,7 @@ async function addTask(req, res) {
                 'INSERT INTO Tasks(description, checked, priority, difficulty, id_project, section) VALUES($1, $2, $3, $4, $5, $6)',
                 [description, 0, priority, difficulty, projectId, section]
             );
+            res.status(200).json({ status: 'OK' });
         } else
             res.status(400).json({
                 status: 'ERROR',
