@@ -80,11 +80,11 @@ async function create(req, res) {
     let projectTitle = req.body.title;
     let titleRgx = /^[a-zA-Z0-9@\-\._\ ]{1,}$/;
     if (userId && projectTitle && titleRgx.test(projectTitle)) {
-        let response = await db.query(
-            'INSERT INTO Projects (title) VALUES ($1) RETURNING id_project',
-            [projectTitle]
+        let lastId = await dbUtils.getProjectLastId() + 1;
+        await db.query(
+            'INSERT INTO Projects (id_project, title) VALUES ($1, $2)',
+            [lastId, projectTitle]
         );
-        let lastId = response.rows[0].id_project;
         db.query('INSERT INTO Own (id_user, id_project) VALUES ($1, $2)', [
             userId,
             lastId,
@@ -106,11 +106,24 @@ async function addTask(req, res) {
         let projectId = req.params.id;
         if (await dbUtils.isProjectToUser(projectId, userId)) {
             let { description, priority, difficulty, section } = req.body;
-            db.query(
-                'INSERT INTO Tasks(description, checked, priority, difficulty, id_project, section) VALUES($1, $2, $3, $4, $5, $6)',
-                [description, 0, priority, difficulty, projectId, section]
+            let lastId = await dbUtils.getTaskLastId() + 1;
+            console.log('Last task id:', lastId);
+            let result = await db.query(
+                'INSERT INTO Tasks(id_task, description, checked, priority, difficulty, id_project, section) VALUES($1, $2, $3, $4, $5, $6, $7)',
+                [
+                    lastId,
+                    description,
+                    0,
+                    priority,
+                    difficulty,
+                    projectId,
+                    section,
+                ]
             );
-            res.status(200).json({ status: 'OK' });
+            res.status(200).json({
+                status: 'OK',
+                id_task: lastId,
+            });
         } else
             res.status(400).json({
                 status: 'ERROR',

@@ -27,7 +27,28 @@ function isProjectToUser(projectId, userId) {
     });
 }
 
+async function getProjectLastId() {
+    let result = await db.query('SELECT MAX(id_project) FROM projects');
+    if (result && result.rowCount > 0) {
+        let lastId = result.rows[0].max;
+        return lastId;
+    }
+    return 0;
+}
+
+async function getTaskLastId() {
+    let result = await db.query('SELECT MAX(id_task) FROM tasks');
+    console.log('Task request: ', result);
+    if (result && result.rowCount > 0) {
+        let lastId = result.rows[0].max;
+        return lastId;
+    }
+    return 0;
+}
+
 module.exports = {
     isProjectToUser,
+    getProjectLastId,
+    getTaskLastId,
     db,
 };

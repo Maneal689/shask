@@ -61,7 +61,7 @@ class ProjectPage extends Component {
                         if (tasksList[i].id_task === id) toRemove = i;
                     }
                     tasksList.splice(toRemove, 1);
-                    this.setState(tasksList);
+                    this.setState({ tasksList });
                 }
             });
     }
@@ -69,6 +69,8 @@ class ProjectPage extends Component {
     updateTasksList(taskInfo) {
         let tasksList = this.state.tasksList;
         let updated = false;
+        if (!taskInfo.checked) taskInfo.checked = 0;
+        if (!taskInfo.section) taskInfo.section = null;
         $('#addTaskModal').modal('hide');
         $('#editTaskModal').modal('hide');
         for (let i = 0; i < tasksList.length; i++) {
@@ -110,8 +112,11 @@ class ProjectPage extends Component {
         })
             .then(res => res.json())
             .then(data => {
-                if (data.status === 'OK') document.location.reload();
-                else console.error(data);
+                if (data.status === 'OK') {
+                    taskInfo.id_task = data.id_task;
+                    this.updateTasksList(taskInfo);
+                    $('#addTaskModal').modal('hide');
+                } else console.error(data);
             });
     }
 
