@@ -106,7 +106,7 @@ async function addTask(req, res) {
         let projectId = req.params.id;
         if (await dbUtils.isProjectToUser(projectId, userId)) {
             let { description, priority, difficulty, section } = req.body;
-            db.run(
+            db.query(
                 'INSERT INTO Tasks(description, checked, priority, difficulty, id_project, section) VALUES($1, $2, $3, $4, $5, $6)',
                 [description, 0, priority, difficulty, projectId, section]
             );
