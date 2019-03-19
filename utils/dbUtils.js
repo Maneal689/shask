@@ -16,7 +16,7 @@ let connectObj = process.env.DATABASE_URL
 const db = new Client(connectObj);
 db.connect();
 
-function isProjectToUser(projectId, userId) {
+async function isProjectToUser(projectId, userId) {
     return new Promise((resolve, reject) => {
         db.query('SELECT * FROM Own WHERE id_project=$1 AND id_user=$2', [
             projectId,
@@ -25,6 +25,15 @@ function isProjectToUser(projectId, userId) {
             .then(res => resolve(res.rows.length > 0))
             .catch(err => console.error(err));
     });
+}
+
+async function getUserLastId() {
+    let result = await db.query('SELECT MAX(id_user) FROM users');
+    if (result && result.rowCount > 0) {
+        let lastId = result.rows[0].max;
+        return lastId;
+    }
+    return 0;
 }
 
 async function getProjectLastId() {
@@ -49,6 +58,7 @@ async function getTaskLastId() {
 module.exports = {
     isProjectToUser,
     getProjectLastId,
+    getUserLastId,
     getTaskLastId,
     db,
 };
