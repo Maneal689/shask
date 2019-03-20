@@ -25,8 +25,11 @@ class DashBoard extends Component {
     }
 
     logout() {
-        fetch('/api/user/logout', { method: 'GET' });
-        document.location.href = '/';
+        fetch('/api/user/logout', { method: 'GET' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'OK') document.location.href = '/';
+            });
     }
 
     createProject(title) {
