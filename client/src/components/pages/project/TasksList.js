@@ -88,7 +88,12 @@ class TasksList extends Component {
                         </button>
                         <button
                             className="btn btn-sm btn-danger"
-                            onClick={() => this.props.removeTask(task.id_task)}
+                            onClick={() => {
+                                let conf = window.confirm(
+                                    'Voulez vous vraiment supprimer la tâche?'
+                                );
+                                if (conf) this.props.removeTask(task.id_task);
+                            }}
                         >
                             <i className="fas fa-times" />
                         </button>
