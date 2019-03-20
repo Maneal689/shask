@@ -29,7 +29,7 @@ class CollaboratorList extends Component {
                 userData.image_url =
                     'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
             return (
-                <li className="list-group-item bg-secondary">
+                <li className="list-group-item bg-dark text-light">
                     <div className="d-flex" style={{ maxHeight: '2em' }}>
                         <img
                             className="mr-5 rounded-circle"
@@ -51,16 +51,16 @@ class CollaboratorList extends Component {
         let id = title + 'ID';
         if (userList) userTabList = userList.map(elm => this.userCard(elm));
         return (
-            <div className="card text-light bg-secondary mb-3 border-0">
+            <div>
                 <a
-                    className="card-header text-light"
+                    className="text-light"
                     data-toggle="collapse"
                     style={{ textDecoration: 'none' }}
                     href={(() => '#' + id)()}
                 >
                     <h3>{title}</h3>
                 </a>
-                <div className="card-body collapse show" id={id}>
+                <div className="collapse show" id={id}>
                     <ul className="list-group list-group-flush">
                         {userTabList || (
                             <li class="list-group-item bg-dark">
@@ -124,7 +124,7 @@ class CollaboratorList extends Component {
 
     render() {
         return (
-            <div className="text-center d-flex flex-column border">
+            <div className="text-center d-flex flex-column border-0">
                 {this.getUserTabList(
                     this.state.collaboratorsList,
                     'Collaborateurs'

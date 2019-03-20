@@ -9,7 +9,7 @@ class ProjectModal extends Component {
     render() {
         return (
             <div
-                className="modal fade"
+                className="modal fade text-dark"
                 id="createProjectModal"
                 role="dialog"
                 aria-hidden="true"

@@ -18,7 +18,7 @@ class Project extends Component {
             let percent = (nbTasksChecked / nbTasks) * 100;
             return (
                 <a
-                    className="list-group-item list-group-item-action bg-primary text-light"
+                    className="list-group-item list-group-item-action bg-dark text-light"
                     href={(() => '/project/' + data.id_project)()}
                 >
                     <div className="d-flex flex-column">
@@ -30,7 +30,7 @@ class Project extends Component {
                         </div>
                         <div class="progress">
                             <div
-                                class="progress-bar bg-warning"
+                                class="progress-bar bg-info"
                                 role="progressbar"
                                 style={{ width: percent + '%' }}
                                 aria-valuenow={percent}
@@ -70,23 +70,19 @@ class Project extends Component {
                 this.projectCard(elm)
             );
         return (
-            <div className="card text-light bg-primary mb-3 border-0 text-center">
-                <div className="card-header">
-                    <h3>Projets</h3>
-                </div>
-                <div className="card-body">
-                    <div className="list-group list-group-flush">
-                        {projectsTabList || (
-                            <div class="list-group-item bg-dark">
-                                <div
-                                    className="spinner-border text-light"
-                                    role="status"
-                                >
-                                    <span className="sr-only">Loading...</span>
-                                </div>
+            <div className="text-light mb-3 border-0 text-center">
+                <h3>Projets</h3>
+                <div className="list-group list-group-flush">
+                    {projectsTabList || (
+                        <div class="list-group-item bg-dark">
+                            <div
+                                className="spinner-border text-light"
+                                role="status"
+                            >
+                                <span className="sr-only">Loading...</span>
                             </div>
-                        )}
-                    </div>
+                        </div>
+                    )}
                 </div>
             </div>
         );
