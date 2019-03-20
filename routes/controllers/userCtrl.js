@@ -93,7 +93,7 @@ async function login(req, res) {
 
 function logged(req, res) {
     let userId = jwtUtils.getUserId(req);
-    if (userId) res.status(200).json({ status: 'OK' });
+    if (userId) res.status(200).json({ status: 'OK', id_user: userId });
     else
         res.status(400).json({
             status: 'ERROR',

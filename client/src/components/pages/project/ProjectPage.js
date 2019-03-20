@@ -11,6 +11,7 @@ class ProjectPage extends Component {
         this.handleCheck = this.handleCheck.bind(this);
         this.addTask = this.addTask.bind(this);
         this.addCollaborator = this.addCollaborator.bind(this);
+        this.removeCollaborator = this.removeCollaborator.bind(this);
         this.removeTask = this.removeTask.bind(this);
         this.updateTasksList = this.updateTasksList.bind(this);
     }
@@ -81,6 +82,29 @@ class ProjectPage extends Component {
         }
         if (!updated) tasksList.push(taskInfo);
         this.setState({ tasksList });
+    }
+
+    removeCollaborator(id_user) {
+        for (let i = 0; i < this.state.collaboratorsList.length; i++) {
+            let collab = this.state.collaboratorsList[i];
+            if (collab.id_user === id_user) {
+                let url =
+                    '/api/project/' +
+                    this.state.id_project +
+                    '/removeCollaborator?id=' +
+                    id_user;
+                fetch(url, { method: 'GET' })
+                    .then(res => res.json())
+                    .then(data => {
+                        if (data.status === 'OK') {
+                            let collaboratorsList = this.state
+                                .collaboratorsList;
+                            collaboratorsList.splice(i, 1);
+                            this.setState(collaboratorsList);
+                        }
+                    });
+            }
+        }
     }
 
     addCollaborator(username) {
@@ -171,8 +195,11 @@ class ProjectPage extends Component {
                     </div>
                 </div>
                 <CollaboratorsList
+                    creator={this.state.creator}
+                    myId={this.state.myId}
                     list={this.state.collaboratorsList}
                     fallback={this.addCollaborator}
+                    removeCollab={this.removeCollaborator}
                 />
                 <TasksList
                     list={this.state.tasksList}

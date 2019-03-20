@@ -22,7 +22,7 @@ async function isProjectToUser(projectId, userId) {
             projectId,
             userId,
         ])
-            .then(res => resolve(res.rows.length > 0))
+            .then(res => resolve(res.rows.length > 0 ? res.rows[0] : false))
             .catch(err => console.error(err));
     });
 }

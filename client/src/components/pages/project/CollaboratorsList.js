@@ -18,7 +18,7 @@ class CollaratorsList extends Component {
                     user.image_url =
                         'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
                 return (
-                    <div className="col-lg-3 col-md-4 col-sm-6">
+                    <div className="col-xl-3 col-lg-4 col-md-6 col-12">
                         <div className="row align-items-center mb-2">
                             <img
                                 className="mr-4 rounded-circle"
@@ -27,6 +27,19 @@ class CollaratorsList extends Component {
                                 style={{ width: '2em', height: '2em' }}
                             />{' '}
                             {user.username}
+                            {this.props.creator === 1 &&
+                                this.props.myId !== user.id_user && (
+                                    <button
+                                        className="btn btn-danger btn-sm"
+                                        onClick={() =>
+                                            this.props.removeCollab(
+                                                user.id_user
+                                            )
+                                        }
+                                    >
+                                        <i className="fas fa-times" />
+                                    </button>
+                                )}
                         </div>
                     </div>
                 );
@@ -53,7 +66,6 @@ class CollaratorsList extends Component {
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'OK') {
-                    console.log('Search result: ', data);
                     let usersList = data.userList.map(user => {
                         if (!user.imageurl)
                             user.imageurl =
@@ -96,46 +108,48 @@ class CollaratorsList extends Component {
         return (
             <div id="collaborators-div" className="col-12 mb-4">
                 <h2>Collaborateurs:</h2>
-                <div className="row">
-                    <div className="col-lg-3 col-md-5 col-sm-12">
-                        <input
-                            type="text"
-                            className="form-control form-control-lg form-group"
-                            id="search-collab"
-                            placeholder="Ajouter un collaborateur"
-                            onChange={this.getSuggests}
-                            onFocus={() => this.setState({ suggest: true })}
-                        />
-                        <div
-                            className="rounded-bottom"
-                            style={{
-                                position: 'absolute',
-                                height: this.state.suggest ? '' : '0',
-                                overflow: 'hidden',
-                                transitionDuration: '0.5s',
-                                top:
-                                    this.state.input &&
-                                    this.state.input.clientHeight - 8,
-                                width:
-                                    this.state.input &&
-                                    this.state.input.clientWidth,
-                                zIndex: 10,
-                            }}
-                        >
-                            {this.state.suggestsDivList}
+                {this.props.creator === 1 && (
+                    <div className="row">
+                        <div className="col-lg-3 col-md-5 col-12">
+                            <input
+                                type="text"
+                                className="form-control form-control-lg form-group"
+                                id="search-collab"
+                                placeholder="Ajouter un collaborateur"
+                                onChange={this.getSuggests}
+                                onFocus={() => this.setState({ suggest: true })}
+                            />
+                            <div
+                                className="rounded-bottom"
+                                style={{
+                                    position: 'absolute',
+                                    height: this.state.suggest ? '' : '0',
+                                    overflow: 'hidden',
+                                    transitionDuration: '0.5s',
+                                    top:
+                                        this.state.input &&
+                                        this.state.input.clientHeight - 8,
+                                    width:
+                                        this.state.input &&
+                                        this.state.input.clientWidth,
+                                    zIndex: 10,
+                                }}
+                            >
+                                {this.state.suggestsDivList}
+                            </div>
+                        </div>
+                        <div className="col-12 col-md-auto">
+                            <button
+                                className="btn btn-lg btn-primary"
+                                onClick={() =>
+                                    this.props.fallback(this.state.input.value)
+                                }
+                            >
+                                Ajouter
+                            </button>
                         </div>
                     </div>
-                    <div className="col-auto">
-                        <button
-                            className="btn btn-lg btn-primary"
-                            onClick={() =>
-                                this.props.fallback(this.state.input.value)
-                            }
-                        >
-                            Ajouter
-                        </button>
-                    </div>
-                </div>
+                )}
                 <div className="row ml-5">{usersDiv}</div>
             </div>
         );
