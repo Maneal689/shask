@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import $ from 'jquery';
 import StarRating from '../StarRating';
 import EditTaskModal from './EditTaskModal';
 
@@ -28,12 +29,14 @@ class TasksList extends Component {
     }
 
     taskRow(task) {
+        let cId = 'taskId' + task.id_task;
         let checkClass =
             task.checked === 1
                 ? 'far fa-check-circle col-1'
                 : 'far fa-circle col-1';
         return (
             <li
+                key={task.id_task}
                 className="list-group-item bg-dark text-light"
                 style={{ fontSize: '1.1em' }}
             >
@@ -43,7 +46,14 @@ class TasksList extends Component {
                         style={{ cursor: 'pointer', fontSize: '1.3em' }}
                         onClick={() => this.props.fallback(task.id_task)}
                     />
-                    <p className="col-lg-6 col-10 text-truncate m-0">
+                    <p
+                        className="col-lg-6 col-10 text-truncate m-0"
+                        id={cId}
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => {
+                            $('#' + cId).toggleClass('text-truncate');
+                        }}
+                    >
                         {task.description}
                     </p>
                     <div className="col-lg-3 col-12">
@@ -94,7 +104,7 @@ class TasksList extends Component {
             if (task.section && res.indexOf(task.section) === -1)
                 res.push(task.section);
         }
-        res = res.sort((a, b) => a - b);
+        res = res.sort();
         res.unshift(null);
         return res;
     }

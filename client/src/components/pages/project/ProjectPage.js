@@ -144,6 +144,8 @@ class ProjectPage extends Component {
                     taskInfo.id_task = data.id_task;
                     this.updateTasksList(taskInfo);
                     $('#addTaskModal').modal('hide');
+                    $('#descInputModal').val('');
+                    $('#sectionInputModal').val('');
                 } else console.error(data);
             });
     }

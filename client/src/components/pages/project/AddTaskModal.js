@@ -18,9 +18,7 @@ class AddTaskModal extends Component {
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title">
-                                Ajouter une tâche
-                            </h5>
+                            <h5 class="modal-title">Ajouter une tâche</h5>
                             <button
                                 type="button"
                                 class="close"
@@ -49,6 +47,7 @@ class AddTaskModal extends Component {
                                     nbStar={5}
                                     color="yellow"
                                     editable={true}
+                                    default={0}
                                 />
                                 <StarRating
                                     id="starRating2"
@@ -56,6 +55,7 @@ class AddTaskModal extends Component {
                                     nbStar={5}
                                     color="red"
                                     editable={true}
+                                    default={0}
                                 />
                             </form>
                         </div>
@@ -72,12 +72,12 @@ class AddTaskModal extends Component {
                                 class="btn btn-primary"
                                 onClick={() => {
                                     let taskInfo = {};
-                                    taskInfo.priority = document.getElementById(
-                                        'starRating1'
-                                    ).value || 0;
-                                    taskInfo.difficulty = document.getElementById(
-                                        'starRating2'
-                                    ).value || 0;
+                                    taskInfo.priority =
+                                        document.getElementById('starRating1')
+                                            .value || 0;
+                                    taskInfo.difficulty =
+                                        document.getElementById('starRating2')
+                                            .value || 0;
                                     taskInfo.description = document.getElementById(
                                         'descInputModal'
                                     ).value;
@@ -98,7 +98,9 @@ class AddTaskModal extends Component {
                                             descInput.classList.add(
                                                 'is-invalid'
                                             );
-                                    } else this.props.fallback(taskInfo);
+                                    } else {
+                                        this.props.fallback(taskInfo);
+                                    }
                                 }}
                             >
                                 Créer

@@ -4,15 +4,26 @@ class StarRating extends Component {
     constructor(props) {
         super(props);
         let checkedList = [];
-        for (let i = 0; i < this.props.nbStar; i++) checkedList.push(false);
+        for (let i = 0; i < this.props.nbStar; i++) {
+            checkedList.push(
+                this.props.default ? (i < this.props.default) : false
+            );
+        }
+        this.props.default = undefined;
         this.state = { checkedList, hovered: -1 };
     }
 
     componentDidUpdate() {
         if (this.props.editable) {
             let me = document.getElementById(this.props.id);
-            if (this.props.default) me.value = this.props.default;
-            else {
+            if (this.props.default) {
+                let checkedList = [];
+                for (let i = 0; i < this.props.nbStar; i++)
+                    checkedList.push(i < this.props.default);
+                me.value = this.props.default;
+                this.props.default = undefined;
+                this.setState({ checkedList });
+            } else {
                 let value = this.state.checkedList.lastIndexOf(true) + 1;
                 me.value = value;
             }
@@ -27,15 +38,12 @@ class StarRating extends Component {
                 starList.push(
                     <i
                         className={
-                            this.state.checkedList[i] ||
-                            (this.props.default && i < this.props.default)
+                            this.state.checkedList[i]
                                 ? 'fas fa-star'
                                 : 'far fa-star'
                         }
                         style={
-                            this.state.checkedList[i] ||
-                            this.state.hovered >= i ||
-                            (this.props.default && i < this.props.default)
+                            this.state.checkedList[i] || this.state.hovered >= i
                                 ? checkedStyle
                                 : { cursor: 'pointer' }
                         }
@@ -43,7 +51,6 @@ class StarRating extends Component {
                         onMouseLeave={() => this.setState({ hovered: -1 })}
                         onClick={() => {
                             let checkedList = this.state.checkedList;
-                            this.props.default = undefined;
                             for (let j = 0; j < this.props.nbStar; j++) {
                                 checkedList[j] = false;
                                 if (j <= i) checkedList[j] = true;
@@ -56,15 +63,12 @@ class StarRating extends Component {
                 starList.push(
                     <i
                         className={
-                            this.state.checkedList[i] ||
-                            (this.props.default && i < this.props.default)
+                            this.state.checkedList[i]
                                 ? 'fas fa-star'
                                 : 'far fa-star'
                         }
                         style={
-                            this.state.checkedList[i] ||
-                            this.state.hovered >= i ||
-                            (this.props.default && i < this.props.default)
+                            this.state.checkedList[i] || this.state.hovered >= i
                                 ? { color: this.props.color }
                                 : {}
                         }
