@@ -55,7 +55,7 @@ class TasksList extends Component {
                                 editable={false}
                             />
                             <StarRating
-                                className="ml-5 ml-lg-0"
+                                className="ml-sm-5 ml-lg-0"
                                 default={task.difficulty}
                                 color="red"
                                 nbStar={5}
