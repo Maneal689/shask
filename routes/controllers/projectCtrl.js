@@ -153,7 +153,7 @@ async function addCollaborator(req, res) {
         if (projectToUserResponse && projectToUserResponse.creator === 1) {
             let username = req.body.username;
             let { rows } = await db.query(
-                'SELECT id_user FROM Users WHERE username=$1',
+                'SELECT id_user, username, image_url FROM Users WHERE username=$1',
                 [username]
             );
             if (rows.length > 0) {
@@ -171,6 +171,7 @@ async function addCollaborator(req, res) {
                     );
                     res.status(200).json({
                         status: 'OK',
+                        user: row,
                     });
                 }
             }
@@ -213,4 +214,11 @@ async function removeCollaborator(req, res) {
         });
 }
 
-module.exports = { collaborators, allInfos, create, addTask, addCollaborator, removeCollaborator };
+module.exports = {
+    collaborators,
+    allInfos,
+    create,
+    addTask,
+    addCollaborator,
+    removeCollaborator,
+};

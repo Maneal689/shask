@@ -121,7 +121,11 @@ class ProjectPage extends Component {
             )
                 .then(res => res.json())
                 .then(data => {
-                    if (data.status === 'OK') document.location.reload();
+                    if (data.status === 'OK'){
+                        let collaboratorsList = this.state.collaboratorsList;
+                        collaboratorsList.push(data.user);
+                        this.setState(collaboratorsList);
+                    }
                 });
         }
     }

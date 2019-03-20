@@ -18,8 +18,8 @@ class CollaratorsList extends Component {
                     user.image_url =
                         'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
                 return (
-                    <div className="col-xl-3 col-lg-4 col-md-6 col-12">
-                        <div className="row align-items-center mb-2">
+                    <div className="col-xl-2 col-lg-3 col-md-4 col-12 align-items-center">
+                        <div className="d-flex align-items-center justify-content-between justify-content-md-start mb-2">
                             <img
                                 className="mr-4 rounded-circle"
                                 src={user.image_url}
@@ -30,7 +30,7 @@ class CollaratorsList extends Component {
                             {this.props.creator === 1 &&
                                 this.props.myId !== user.id_user && (
                                     <button
-                                        className="btn btn-danger btn-sm"
+                                        className="btn btn-danger btn-sm ml-2"
                                         onClick={() =>
                                             this.props.removeCollab(
                                                 user.id_user
@@ -67,8 +67,8 @@ class CollaratorsList extends Component {
             .then(data => {
                 if (data.status === 'OK') {
                     let usersList = data.userList.map(user => {
-                        if (!user.imageurl)
-                            user.imageurl =
+                        if (!user.image_url)
+                            user.image_url =
                                 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
                         return (
                             <li
@@ -140,7 +140,7 @@ class CollaratorsList extends Component {
                         </div>
                         <div className="col-12 col-md-auto">
                             <button
-                                className="btn btn-lg btn-primary"
+                                className="btn btn-lg btn-primary mb-2"
                                 onClick={() =>
                                     this.props.fallback(this.state.input.value)
                                 }
@@ -150,7 +150,7 @@ class CollaratorsList extends Component {
                         </div>
                     </div>
                 )}
-                <div className="row ml-5">{usersDiv}</div>
+                <div className="row">{usersDiv}</div>
             </div>
         );
     }

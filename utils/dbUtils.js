@@ -8,7 +8,7 @@ let connectObj = process.env.DATABASE_URL
     : {
           user: 'maneal',
           host: 'localhost',
-          database: 'mylocaldb',
+          database: 'shaskdb',
           password: '',
           port: 5432,
       };

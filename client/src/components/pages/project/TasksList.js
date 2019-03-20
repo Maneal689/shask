@@ -30,8 +30,8 @@ class TasksList extends Component {
     taskRow(task) {
         let checkClass =
             task.checked === 1
-                ? 'far fa-check-circle mr-3 col-1'
-                : 'far fa-circle mr-3 col-1';
+                ? 'far fa-check-circle col-1'
+                : 'far fa-circle col-1';
         return (
             <li
                 className="list-group-item bg-dark text-light"
@@ -43,7 +43,7 @@ class TasksList extends Component {
                         style={{ cursor: 'pointer', fontSize: '1.3em' }}
                         onClick={() => this.props.fallback(task.id_task)}
                     />
-                    <p className="col-lg-6 col-md-7 col-sm-9 text-truncate m-0">
+                    <p className="col-lg-6 col-10 text-truncate m-0">
                         {task.description}
                     </p>
                     <div className="col-lg-3 col-12">
@@ -55,7 +55,7 @@ class TasksList extends Component {
                                 editable={false}
                             />
                             <StarRating
-                                className="ml-lg-0 ml-5"
+                                className="ml-5 ml-lg-0"
                                 default={task.difficulty}
                                 color="red"
                                 nbStar={5}
@@ -150,7 +150,7 @@ class TasksList extends Component {
                     }
                 />
                 <h2>Tâches:</h2>
-                <ul className="col-12 pl-4 list-group list-group-flush bg-dark text-light">
+                <ul className="col-12 list-group list-group-flush bg-dark text-light">
                     {this.getTasksDiv(this.props.list)}
                 </ul>
             </div>
