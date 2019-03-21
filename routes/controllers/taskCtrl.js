@@ -31,7 +31,7 @@ async function toggleChecked(req, res) {
 
 async function config(req, res) {
     let userId = jwtUtils.getUserId(req);
-    let taskId = req.params.id;
+    let taskId = req.body.id_task;
     if (userId) {
         let result = await db.query(
             'SELECT id_project, checked FROM Tasks WHERE id_task=$1',

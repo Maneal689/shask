@@ -84,8 +84,7 @@ async function allInfos(req, res) {
 async function create(req, res) {
     let userId = jwtUtils.getUserId(req);
     let projectTitle = req.body.title;
-    let titleRgx = /^[a-zA-Z0-9@\-\._\ ]{1,}$/;
-    if (userId && projectTitle && titleRgx.test(projectTitle)) {
+    if (userId && projectTitle && projectTitle.length > 0) {
         let lastId = (await dbUtils.getProjectLastId()) + 1;
         await db.query(
             'INSERT INTO Projects (id_project, title) VALUES ($1, $2)',

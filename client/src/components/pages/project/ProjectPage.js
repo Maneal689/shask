@@ -121,7 +121,7 @@ class ProjectPage extends Component {
             )
                 .then(res => res.json())
                 .then(data => {
-                    if (data.status === 'OK'){
+                    if (data.status === 'OK') {
                         let collaboratorsList = this.state.collaboratorsList;
                         collaboratorsList.push(data.user);
                         this.setState(collaboratorsList);
@@ -146,6 +146,8 @@ class ProjectPage extends Component {
                     $('#addTaskModal').modal('hide');
                     $('#descInputModal').val('');
                     $('#sectionInputModal').val('');
+                    document.getElementById('starRating1').value = 0;
+                    $('#starRating2').val(0);
                 } else console.error(data);
             });
     }
@@ -171,7 +173,7 @@ class ProjectPage extends Component {
                 <AddTaskModal fallback={this.addTask} />
                 <button
                     type="button"
-                    className="btn btn-large btn-primary rounded-circle"
+                    className="btn btn-large btn-light rounded-circle"
                     data-toggle="modal"
                     data-target="#addTaskModal"
                     style={{

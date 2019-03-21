@@ -140,7 +140,7 @@ class CollaratorsList extends Component {
                         </div>
                         <div className="col-12 col-md-auto">
                             <button
-                                className="btn btn-lg btn-primary mb-2"
+                                className="btn btn-lg btn-info mb-2"
                                 onClick={() =>
                                     this.props.fallback(this.state.input.value)
                                 }

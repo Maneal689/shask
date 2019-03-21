@@ -48,17 +48,19 @@ class DashBoard extends Component {
     render() {
         return (
             <div className="min-vh-100">
-                <ProjectModal fallback={this.createProject} />
                 <button
                     type="button"
-                    className="btn btn-large btn-primary rounded-circle"
-                    data-toggle="modal"
-                    data-target="#createProjectModal"
+                    className="btn btn-large btn-light rounded-circle"
                     style={{
                         position: 'fixed',
                         right: '50px',
                         bottom: '50px',
                         zIndex: 1000,
+                    }}
+                    onClick={() => {
+                        let projectTitle = window.prompt("Titre du projet:");
+                        if (projectTitle && projectTitle.length > 0)
+                            this.createProject(projectTitle);
                     }}
                 >
                     +

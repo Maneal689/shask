@@ -15,7 +15,7 @@ class TasksList extends Component {
     }
 
     validEditTask(taskInfo) {
-        fetch('/api/task/' + taskInfo.id_task + '/config', {
+        fetch('/api/task/config', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -63,6 +63,9 @@ class TasksList extends Component {
                                 color="yellow"
                                 nbStar={5}
                                 editable={false}
+                                id={(() =>
+                                    'starRatingPriority' + task.id_task)()}
+                                title="Priorité"
                             />
                             <StarRating
                                 className="ml-sm-5 ml-lg-0"
@@ -70,6 +73,8 @@ class TasksList extends Component {
                                 color="red"
                                 nbStar={5}
                                 editable={false}
+                                id={(() => 'starRatingDif' + task.id_task)()}
+                                title="Difficulté"
                             />
                         </div>
                     </div>
@@ -135,12 +140,54 @@ class TasksList extends Component {
                     res.push(
                         <div>
                             <li
-                                data-toggle="collapse"
-                                data-target={(() => '#' + cId)()}
                                 className="list-group-item list-group-item-action bg-secondary d-flex justify-content-center align-items-center text-light"
                                 style={{ cursor: 'pointer' }}
                             >
-                                <h4>{section}</h4>
+                                <h4
+                                    data-toggle="collapse"
+                                    data-target={(() => '#' + cId)()}
+                                >
+                                    {section}
+                                </h4>
+                                <button
+                                    className="btn btn-light btn-sm ml-3 rounded-circle"
+                                    onClick={() => {
+                                        let res = window.prompt(
+                                            'Nouveau titre de section',
+                                            section
+                                        );
+                                        if (res) {
+                                            let tasksList = this.props.list;
+                                            tasksList.forEach(task => {
+                                                if (task.section === section) {
+                                                    task.section = res;
+                                                    fetch('/api/task/config', {
+                                                        method: 'POST',
+                                                        headers: {
+                                                            'Content-Type':
+                                                                'application/json',
+                                                        },
+                                                        body: JSON.stringify(
+                                                            task
+                                                        ),
+                                                    })
+                                                        .then(res => res.json())
+                                                        .then(data => {
+                                                            if (
+                                                                data.status ===
+                                                                'OK'
+                                                            )
+                                                                this.props.updateTasksList(
+                                                                    task
+                                                                );
+                                                        });
+                                                }
+                                            });
+                                        }
+                                    }}
+                                >
+                                    <i className='fas fa-cog' />
+                                </button>
                             </li>
                             <div className="collapse show" id={cId}>
                                 {tasks.map(task => this.taskRow(task))}
