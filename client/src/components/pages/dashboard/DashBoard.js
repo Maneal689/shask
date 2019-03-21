@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 import CollaboratorList from './CollaboratorList';
 import ProjectsList from './ProjectsList';
-import ProjectModal from './ProjectModal';
 
 class DashBoard extends Component {
     constructor(props) {
