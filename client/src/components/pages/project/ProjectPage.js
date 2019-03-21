@@ -13,6 +13,8 @@ class ProjectPage extends Component {
         this.addCollaborator = this.addCollaborator.bind(this);
         this.removeCollaborator = this.removeCollaborator.bind(this);
         this.removeTask = this.removeTask.bind(this);
+        this.deleteProject = this.deleteProject.bind(this);
+        this.quitProject = this.quitProject.bind(this);
         this.updateTasksList = this.updateTasksList.bind(this);
     }
 
@@ -35,6 +37,26 @@ class ProjectPage extends Component {
                     res.init = true;
                     this.setState(res);
                 }
+            });
+    }
+
+    quitProject() {
+        fetch('/api/project/' + this.state.id_project + '/quit', {
+            method: 'GET',
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'OK') document.location.href = '/dashboard';
+            });
+    }
+
+    deleteProject() {
+        fetch('/api/project/' + this.state.id_project + '/delete', {
+            method: 'GET',
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'OK') document.location.href = '/dashboard';
             });
     }
 
@@ -215,6 +237,41 @@ class ProjectPage extends Component {
                     removeTask={this.removeTask}
                     updateTasksList={this.updateTasksList}
                 />
+                {(this.state.creator === 1 && (
+                    <div className="row">
+                        <button
+                            className="btn btn-danger btn-lg"
+                            onClick={() => {
+                                let conf = window.prompt(
+                                    `Entrez le nom du projet ("${
+                                        this.state.title
+                                    }") pour valider la suppression:`
+                                );
+                                if (conf && conf === this.state.title)
+                                    this.deleteProject();
+                            }}
+                        >
+                            Supprimer le projet
+                        </button>
+                    </div>
+                )) || (
+                    <div class="row">
+                        <button
+                            className="btn btn-danger btn-lg"
+                            onClick={() => {
+                                let conf = window.prompt(
+                                    `Entrez le nom du projet ("${
+                                        this.state.title
+                                    }") pour valider:`
+                                );
+                                if (conf && conf === this.state.title)
+                                    this.quitProject();
+                            }}
+                        >
+                            Quitter le projet
+                        </button>
+                    </div>
+                )}
             </div>
         );
     }

@@ -213,6 +213,41 @@ async function removeCollaborator(req, res) {
         });
 }
 
+async function deleteProject(req, res) {
+    let userId = jwtUtils.getUserId(req);
+    if (userId) {
+        let projectId = req.params.id;
+        let projectToUserResponse = await dbUtils.isProjectToUser(
+            projectId,
+            userId
+        );
+        if (projectToUserResponse && projectToUserResponse.creator === 1) {
+            db.query('DELETE FROM Own WHERE id_project=$1', [projectId]);
+            db.query('DELETE FROM Tasks WHERE id_project=$1', [projectId]);
+            db.query('DELETE FROM Projects WHERE id_project=$1', [projectId]);
+            res.status(200).json({ status: 'OK' });
+        }
+    }
+}
+
+async function quitProject(req, res) {
+    let userId = jwtUtils.getUserId(req);
+    if (userId) {
+        let projectId = req.params.id;
+        let projectToUserResponse = await dbUtils.isProjectToUser(
+            projectId,
+            userId
+        );
+        if (projectToUserResponse && projectToUserResponse.creator === 0) {
+            db.query('DELETE FROM Own WHERE id_project=$1 AND id_user=$2', [
+                projectId,
+                userId,
+            ]);
+            res.status(200).json({ status: 'OK' });
+        }
+    }
+}
+
 module.exports = {
     collaborators,
     allInfos,
@@ -220,4 +255,6 @@ module.exports = {
     addTask,
     addCollaborator,
     removeCollaborator,
+    deleteProject,
+    quitProject,
 };
