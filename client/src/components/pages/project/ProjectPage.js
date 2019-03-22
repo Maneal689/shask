@@ -7,7 +7,11 @@ import TasksList from './TasksList';
 class ProjectPage extends Component {
     constructor(props) {
         super(props);
-        this.state = { id_project: props.match.params.id, init: false };
+        this.state = {
+            id_project: props.match.params.id,
+            init: false,
+            prioProgress: false,
+        };
         this.handleCheck = this.handleCheck.bind(this);
         this.addTask = this.addTask.bind(this);
         this.addCollaborator = this.addCollaborator.bind(this);
@@ -16,6 +20,7 @@ class ProjectPage extends Component {
         this.deleteProject = this.deleteProject.bind(this);
         this.quitProject = this.quitProject.bind(this);
         this.updateTasksList = this.updateTasksList.bind(this);
+        this.getTaskProgressScore = this.getTaskProgressScore.bind(this);
     }
 
     componentWillMount() {
@@ -38,6 +43,10 @@ class ProjectPage extends Component {
                     this.setState(res);
                 }
             });
+    }
+
+    getTaskProgressScore(task) {
+        return task.priority + task.difficulty * 2;
     }
 
     quitProject() {
@@ -184,11 +193,24 @@ class ProjectPage extends Component {
                 </div>
             );
         }
-        let nbTasks = this.state.tasksList.length;
-        let nbTasksChecked = this.state.tasksList.reduce(
-            (acc, elm) => acc + elm.checked,
-            0
-        );
+        let nbTasks = undefined;
+        let nbTasksChecked = undefined;
+        if (!this.state.prioProgress) {
+            nbTasks = this.state.tasksList.length;
+            nbTasksChecked = this.state.tasksList.reduce(
+                (acc, task) => acc + task.checked,
+                0
+            );
+        } else {
+            nbTasks = this.state.tasksList.reduce(
+                (acc, task) => acc + this.getTaskProgressScore(task),
+                0
+            );
+            nbTasksChecked = this.state.tasksList.reduce((acc, task) => {
+                if (task.checked) return acc + this.getTaskProgressScore(task);
+                return acc;
+            }, 0);
+        }
         let percent = (nbTasksChecked / nbTasks) * 100;
         return (
             <div>
@@ -210,8 +232,30 @@ class ProjectPage extends Component {
                 <h1>{this.state.title}</h1>
                 <div id="progress-div" className="col-12 mb-4">
                     <div className="d-flex justify-content-between">
-                        <h2>Progrès:</h2>
-                        {nbTasksChecked}/{nbTasks}
+                        <h2>
+                            Progrès: {nbTasksChecked}/{nbTasks}
+                        </h2>
+                        <div className="custom-control custom-switch custom-switch-lg">
+                            <input
+                                type="checkbox"
+                                className="custom-control-input"
+                                id="switch-progress-prio"
+                                onChange={() => {
+                                    let checked = $('#switch-progress-prio').is(
+                                        ':checked'
+                                    );
+                                    this.setState({
+                                        prioProgress: checked,
+                                    });
+                                }}
+                            />
+                            <label
+                                className="custom-control-label"
+                                htmlFor="switch-progress-prio"
+                            >
+                                Progrès proportionnel à la priorité/difficulté
+                            </label>
+                        </div>
                     </div>
                     <div class="progress" style={{ height: '2em' }}>
                         <div

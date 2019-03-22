@@ -6,12 +6,14 @@ import EditTaskModal from './EditTaskModal';
 class TasksList extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { displaySections: true };
         this.getTasksDiv = this.getTasksDiv.bind(this);
         this.validEditTask = this.validEditTask.bind(this);
         this.taskRow = this.taskRow.bind(this);
         this.getSections = this.getSections.bind(this);
         this.getTasksOfSection = this.getTasksOfSection.bind(this);
+        this.editSection = this.editSection.bind(this);
+        this.getTaskSortScore = this.getTaskSortScore.bind(this);
     }
 
     validEditTask(taskInfo) {
@@ -26,6 +28,30 @@ class TasksList extends Component {
             .then(data => {
                 if (data.status === 'OK') this.props.updateTasksList(taskInfo);
             });
+    }
+
+    editSection() {
+        let res = window.prompt('Nouveau titre de section', section);
+        if (res) {
+            let tasksList = this.props.list;
+            tasksList.forEach(task => {
+                if (task.section === section) {
+                    task.section = res;
+                    fetch('/api/task/config', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(task),
+                    })
+                        .then(res => res.json())
+                        .then(data => {
+                            if (data.status === 'OK')
+                                this.props.updateTasksList(task);
+                        });
+                }
+            });
+        }
     }
 
     taskRow(task) {
@@ -124,78 +150,58 @@ class TasksList extends Component {
         for (let task of list) {
             if (task.section === section) res.push(task);
         }
-        res = res.sort((a, b) => b.priority - a.priority);
+        res = res.sort(
+            (a, b) => this.getTaskSortScore(b) - this.getTaskSortScore(a)
+        );
         return res;
+    }
+
+    getTaskSortScore(task) {
+        return (2 * task.priority) / task.difficulty;
     }
 
     getTasksDiv(list) {
         let res = [];
-        if (list) {
+        if (list && this.state.displaySections) {
             let sections = this.getSections(list);
             for (let i = 0; i < sections.length; i++) {
                 let section = sections[i];
                 let tasks = this.getTasksOfSection(section, list);
                 let cId = 'sectionId' + i;
-                if (section)
+                if (section) {
+                    let nbTasks = tasks.length;
+                    let nbTasksChecked = tasks.reduce(
+                        (acc, task) => acc + task.checked,
+                        0
+                    );
                     res.push(
                         <div>
                             <li
+                                data-toggle="collapse"
+                                data-target={(() => '#' + cId)()}
                                 className="list-group-item list-group-item-action bg-secondary d-flex justify-content-center align-items-center text-light"
                                 style={{ cursor: 'pointer' }}
                             >
-                                <h4
-                                    data-toggle="collapse"
-                                    data-target={(() => '#' + cId)()}
-                                >
-                                    {section}
-                                </h4>
+                                <h4>{section}: {nbTasksChecked}/{nbTasks}</h4>
                                 <button
                                     className="btn btn-light btn-sm ml-3 rounded-circle"
-                                    onClick={() => {
-                                        let res = window.prompt(
-                                            'Nouveau titre de section',
-                                            section
-                                        );
-                                        if (res) {
-                                            let tasksList = this.props.list;
-                                            tasksList.forEach(task => {
-                                                if (task.section === section) {
-                                                    task.section = res;
-                                                    fetch('/api/task/config', {
-                                                        method: 'POST',
-                                                        headers: {
-                                                            'Content-Type':
-                                                                'application/json',
-                                                        },
-                                                        body: JSON.stringify(
-                                                            task
-                                                        ),
-                                                    })
-                                                        .then(res => res.json())
-                                                        .then(data => {
-                                                            if (
-                                                                data.status ===
-                                                                'OK'
-                                                            )
-                                                                this.props.updateTasksList(
-                                                                    task
-                                                                );
-                                                        });
-                                                }
-                                            });
-                                        }
-                                    }}
+                                    onClick={this.editSection}
                                 >
                                     <i className="fas fa-cog" />
                                 </button>
                             </li>
-                            <div className="collapse show" id={cId}>
+                            <div className="collapse" id={cId}>
                                 {tasks.map(task => this.taskRow(task))}
                             </div>
                         </div>
                     );
-                else res.push(tasks.map(task => this.taskRow(task)));
+                } else res.push(tasks.map(task => this.taskRow(task)));
             }
+        } else if (list) {
+            list = list.sort(
+                (a, b) => this.getTaskSortScore(b) - this.getTaskSortScore(a)
+            );
+            res = list.map(task => this.taskRow(task));
         }
         return res;
     }
@@ -211,7 +217,30 @@ class TasksList extends Component {
                             : {}
                     }
                 />
-                <h2>Tâches:</h2>
+                <div className="row justify-content-between">
+                    <h2>Tâches:</h2>
+                    <div className="custom-control custom-switch custom-switch-lg">
+                        <input
+                            type="checkbox"
+                            className="custom-control-input"
+                            id="switch-section"
+                            onChange={() => {
+                                let checked = $('#switch-section').is(
+                                    ':checked'
+                                );
+                                this.setState({
+                                    displaySections: !checked,
+                                });
+                            }}
+                        />
+                        <label
+                            className="custom-control-label"
+                            htmlFor="switch-section"
+                        >
+                            Désactiver les sections
+                        </label>
+                    </div>
+                </div>
                 <ul className="col-12 list-group list-group-flush bg-dark text-light">
                     {this.getTasksDiv(this.props.list)}
                 </ul>
