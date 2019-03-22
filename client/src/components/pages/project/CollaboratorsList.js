@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import './autosuggest.css';
 
 class CollaratorsList extends Component {
     constructor(props) {

@@ -238,9 +238,9 @@ class ProjectPage extends Component {
                     updateTasksList={this.updateTasksList}
                 />
                 {(this.state.creator === 1 && (
-                    <div className="row">
+                    <div className="row justify-content-center">
                         <button
-                            className="btn btn-danger btn-lg"
+                            className="btn btn-danger btn-lg p-3"
                             onClick={() => {
                                 let conf = window.prompt(
                                     `Entrez le nom du projet ("${
@@ -255,9 +255,9 @@ class ProjectPage extends Component {
                         </button>
                     </div>
                 )) || (
-                    <div class="row">
+                    <div class="row justify-content-center">
                         <button
-                            className="btn btn-danger btn-lg"
+                            className="btn btn-danger btn-lg p-3"
                             onClick={() => {
                                 let conf = window.prompt(
                                     `Entrez le nom du projet ("${

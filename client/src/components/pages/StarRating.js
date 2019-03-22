@@ -13,6 +13,15 @@ class StarRating extends Component {
         this.setState({ me, value: me.value });
     }
 
+    componentDidUpdate() {
+        if (this.props.default) {
+            let me = this.state.me;
+            me.value = this.props.default;
+            this.props.default = undefined;
+            this.setState({ me, value: me.value });
+        }
+    }
+
     render() {
         let starList = [];
         if (this.state.me) {
@@ -27,7 +36,8 @@ class StarRating extends Component {
                                     : 'far fa-star'
                             }
                             style={
-                                i < this.state.me.value || this.state.hovered >= i
+                                i < this.state.me.value ||
+                                this.state.hovered >= i
                                     ? checkedStyle
                                     : { cursor: 'pointer' }
                             }
