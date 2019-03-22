@@ -9,15 +9,16 @@ class StarRating extends Component {
     componentDidMount() {
         let me = document.getElementById(this.props.id);
         me.value = 0;
-        if (this.props.default) me.value = this.props.default;
+        if (this.props.default != undefined) {
+            me.value = this.props.default;
+        }
         this.setState({ me, value: me.value });
     }
 
     componentDidUpdate() {
-        if (this.props.default) {
+        if (this.props.default != undefined && this.state.me.value !== this.props.default) {
             let me = this.state.me;
             me.value = this.props.default;
-            this.props.default = undefined;
             this.setState({ me, value: me.value });
         }
     }
@@ -44,8 +45,10 @@ class StarRating extends Component {
                             onMouseEnter={() => this.setState({ hovered: i })}
                             onMouseLeave={() => this.setState({ hovered: -1 })}
                             onClick={() => {
-                                this.state.me.value = i + 1;
-                                this.setState({ value: this.state.me.value });
+                                let me = this.state.me;
+                                me.value = i + 1;
+                                this.props.default = undefined;
+                                this.setState({ me, value: this.state.me.value });
                             }}
                         />
                     );

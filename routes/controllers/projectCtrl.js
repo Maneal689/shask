@@ -112,7 +112,6 @@ async function addTask(req, res) {
         if (await dbUtils.isProjectToUser(projectId, userId)) {
             let { description, priority, difficulty, section } = req.body;
             let lastId = (await dbUtils.getTaskLastId()) + 1;
-            console.log('Last task id:', lastId);
             let result = await db.query(
                 'INSERT INTO Tasks(id_task, description, checked, priority, difficulty, id_project, section) VALUES($1, $2, $3, $4, $5, $6, $7)',
                 [

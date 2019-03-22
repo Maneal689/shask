@@ -74,10 +74,10 @@ class AddTaskModal extends Component {
                                     let taskInfo = {};
                                     taskInfo.priority =
                                         document.getElementById('starRating1')
-                                            .value || 0;
+                                            .value;
                                     taskInfo.difficulty =
                                         document.getElementById('starRating2')
-                                            .value || 0;
+                                            .value;
                                     taskInfo.description = document.getElementById(
                                         'descInputModal'
                                     ).value;

@@ -83,11 +83,11 @@ class TasksList extends Component {
                             data-toggle="modal"
                             data-target="#editTaskModal"
                             className="btn btn-sm btn-light"
-                            onClick={() =>
+                            onClick={() => {
                                 this.setState({
                                     defaultEditModal: task,
-                                })
-                            }
+                                });
+                            }}
                         >
                             <i className="far fa-edit" />
                         </button>
@@ -186,7 +186,7 @@ class TasksList extends Component {
                                         }
                                     }}
                                 >
-                                    <i className='fas fa-cog' />
+                                    <i className="fas fa-cog" />
                                 </button>
                             </li>
                             <div className="collapse show" id={cId}>
