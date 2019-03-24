@@ -30,7 +30,7 @@ class TasksList extends Component {
             });
     }
 
-    editSection() {
+    editSection(section) {
         let res = window.prompt('Nouveau titre de section', section);
         if (res) {
             let tasksList = this.props.list;
@@ -182,10 +182,12 @@ class TasksList extends Component {
                                 className="list-group-item list-group-item-action bg-secondary d-flex justify-content-center align-items-center text-light"
                                 style={{ cursor: 'pointer' }}
                             >
-                                <h4>{section}: {nbTasksChecked}/{nbTasks}</h4>
+                                <h4>
+                                    {section}: {nbTasksChecked}/{nbTasks}
+                                </h4>
                                 <button
                                     className="btn btn-light btn-sm ml-3 rounded-circle"
-                                    onClick={this.editSection}
+                                    onClick={() => this.editSection(section)}
                                 >
                                     <i className="fas fa-cog" />
                                 </button>
