@@ -187,18 +187,20 @@ class ProjectPage extends Component {
 
     editProjectName() {
         let newName = window.prompt('Nouveau nom:', this.state.title);
-        if (newName && newName.length) newName = newName.trim();
-        fetch('/api/project/' + this.state.id_project + '/rename', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ newName }),
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'OK') this.setState({ title: newName });
-            });
+        if (newName && newName.length) {
+            newName = newName.trim();
+            fetch('/api/project/' + this.state.id_project + '/rename', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ newName }),
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'OK') this.setState({ title: newName });
+                });
+        }
     }
 
     render() {
