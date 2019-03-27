@@ -93,10 +93,10 @@ class EditTaskModal extends Component {
                                     ).value;
                                     taskInfo.description = document.getElementById(
                                         'descInputEditModal'
-                                    ).value;
+                                    ).value.trim();
                                     taskInfo.section = document.getElementById(
                                         'sectionInputEditModal'
-                                    ).value;
+                                    ).value.trim();
                                     if (taskInfo.section.length === 0)
                                         taskInfo.section = undefined;
                                     if (taskInfo.description.length <= 1) {

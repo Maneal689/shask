@@ -3,6 +3,7 @@ import $ from 'jquery';
 import AddTaskModal from './AddTaskModal';
 import CollaboratorsList from './CollaboratorsList';
 import TasksList from './TasksList';
+import NavigationBar from '../NavigationBar';
 
 class ProjectPage extends Component {
     constructor(props) {
@@ -21,6 +22,7 @@ class ProjectPage extends Component {
         this.quitProject = this.quitProject.bind(this);
         this.updateTasksList = this.updateTasksList.bind(this);
         this.getTaskProgressScore = this.getTaskProgressScore.bind(this);
+        this.editProjectName = this.editProjectName.bind(this);
     }
 
     componentWillMount() {
@@ -183,6 +185,22 @@ class ProjectPage extends Component {
             });
     }
 
+    editProjectName() {
+        let newName = window.prompt('Nouveau nom:', this.state.title);
+        if (newName && newName.length) newName = newName.trim();
+        fetch('/api/project/' + this.state.id_project + '/rename', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ newName }),
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'OK') this.setState({ title: newName });
+            });
+    }
+
     render() {
         if (!this.state.init) {
             return (
@@ -213,7 +231,8 @@ class ProjectPage extends Component {
         }
         let percent = (nbTasksChecked / nbTasks) * 100;
         return (
-            <div>
+            <div className="pt-5">
+                <NavigationBar />
                 <AddTaskModal fallback={this.addTask} />
                 <button
                     type="button"
@@ -229,7 +248,12 @@ class ProjectPage extends Component {
                 >
                     +
                 </button>
-                <h1>{this.state.title}</h1>
+                <div className="row justify-content-center align-items-center">
+                    <h1>{this.state.title}</h1>
+                    <button className="ml-3" onClick={this.editProjectName}>
+                        <i className="fas fa-cog" />
+                    </button>
+                </div>
                 <div id="progress-div" className="col-12 mb-4">
                     <div className="d-flex justify-content-between">
                         <h2>

@@ -81,9 +81,13 @@ class AddTaskModal extends Component {
                                     taskInfo.description = document.getElementById(
                                         'descInputModal'
                                     ).value;
+                                    if (taskInfo.description)
+                                        taskInfo.description = taskInfo.description.trim();
                                     taskInfo.section = document.getElementById(
                                         'sectionInputModal'
                                     ).value;
+                                    if (taskInfo.section)
+                                        taskInfo.section = taskInfo.section.trim();
                                     if (taskInfo.section.length === 0)
                                         taskInfo.section = undefined;
                                     if (taskInfo.description.length <= 1) {

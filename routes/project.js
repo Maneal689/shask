@@ -9,6 +9,7 @@ router.get('/:id/removeCollaborator', projectCtrl.removeCollaborator);
 router.get('/:id/delete', projectCtrl.deleteProject);
 router.get('/:id/quit', projectCtrl.quitProject);
 router.post('/:id/addTask', projectCtrl.addTask);
+router.post('/:id/rename', projectCtrl.rename);
 router.post('/create', projectCtrl.create);
 router.post('/:id/addCollaborator', projectCtrl.addCollaborator);
 

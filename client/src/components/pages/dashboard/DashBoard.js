@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 import CollaboratorList from './CollaboratorList';
 import ProjectsList from './ProjectsList';
+import NavigationBar from '../NavigationBar';
 
 class DashBoard extends Component {
     constructor(props) {
         super(props);
         this.state = {};
-        this.logout = this.logout.bind(this);
         this.createProject = this.createProject.bind(this);
     }
 
@@ -20,14 +20,6 @@ class DashBoard extends Component {
                 } else {
                     document.location.href = '/';
                 }
-            });
-    }
-
-    logout() {
-        fetch('/api/user/logout', { method: 'GET' })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'OK') document.location.href = '/';
             });
     }
 
@@ -46,7 +38,8 @@ class DashBoard extends Component {
 
     render() {
         return (
-            <div className="min-vh-100">
+            <div className="min-vh-100 pt-5">
+                <NavigationBar />
                 <button
                     type="button"
                     className="btn btn-large btn-light rounded-circle"
@@ -64,11 +57,6 @@ class DashBoard extends Component {
                 >
                     +
                 </button>
-                <div className="row">
-                    <div className="navbar col-12">
-                        <button onClick={this.logout}>Déconnexion</button>
-                    </div>
-                </div>
                 <div className="row">
                     <div
                         id="collaborators-pan"

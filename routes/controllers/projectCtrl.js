@@ -247,6 +247,31 @@ async function quitProject(req, res) {
     }
 }
 
+async function rename(req, res) {
+    let userId = jwtUtils.getUserId(req);
+    if (userId) {
+        let projectId = req.params.id;
+        let newProjectName = req.body.newName;
+        let projectToUserResponse = await dbUtils.isProjectToUser(
+            projectId,
+            userId
+        );
+        if (projectToUserResponse && projectToUserResponse.creator === 1) {
+            db.query('UPDATE Projects SET title=$1 WHERE id_project=$2', [
+                newProjectName,
+                projectId,
+            ]);
+            console.log('Edition...');
+            res.status(200).json({ status: 'OK' });
+        } else
+            res.status(400).json({ status: 'ERROR', desc: 'Project not own' });
+    } else
+        res.status(400).json({
+            status: 'ERROR',
+            desc: 'Authentication failed',
+        });
+}
+
 module.exports = {
     collaborators,
     allInfos,
@@ -256,4 +281,5 @@ module.exports = {
     removeCollaborator,
     deleteProject,
     quitProject,
+    rename,
 };
