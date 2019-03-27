@@ -251,8 +251,11 @@ class ProjectPage extends Component {
                     +
                 </button>
                 <div className="row justify-content-center align-items-center">
-                    <h1>{this.state.title}</h1>
-                    <button className="ml-3" onClick={this.editProjectName}>
+                    <h1 className="text-info">{this.state.title}</h1>
+                    <button
+                        className="ml-3 btn btn-sm rounded-circle btn-light"
+                        onClick={this.editProjectName}
+                    >
                         <i className="fas fa-cog" />
                     </button>
                 </div>
