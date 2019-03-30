@@ -40,7 +40,13 @@ class AddTaskModal extends Component {
                                     className="form-control form-control-lg form-group"
                                     id="sectionInputModal"
                                     placeholder="Section"
+                                    list="sectionSuggestList"
                                 />
+                                <datalist id="sectionSuggestList">
+                                    {this.props.sectionsList.map(section => (
+                                        <option value={section} />
+                                    ))}
+                                </datalist>
                                 <StarRating
                                     id="starRating1"
                                     desc="Priorité: "
@@ -72,12 +78,12 @@ class AddTaskModal extends Component {
                                 class="btn btn-primary"
                                 onClick={() => {
                                     let taskInfo = {};
-                                    taskInfo.priority =
-                                        document.getElementById('starRating1')
-                                            .value;
-                                    taskInfo.difficulty =
-                                        document.getElementById('starRating2')
-                                            .value;
+                                    taskInfo.priority = document.getElementById(
+                                        'starRating1'
+                                    ).value;
+                                    taskInfo.difficulty = document.getElementById(
+                                        'starRating2'
+                                    ).value;
                                     taskInfo.description = document.getElementById(
                                         'descInputModal'
                                     ).value;

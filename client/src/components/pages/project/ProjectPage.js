@@ -232,10 +232,17 @@ class ProjectPage extends Component {
             }, 0);
         }
         let percent = (nbTasksChecked / nbTasks) * 100;
+        let sectionsList = this.state.tasksList.map(task => task.section);
+        sectionsList = sectionsList.filter(
+            (elm, index) => sectionsList.indexOf(elm) === index
+        );
         return (
             <div className="pt-5">
                 <NavigationBar />
-                <AddTaskModal fallback={this.addTask} />
+                <AddTaskModal
+                    fallback={this.addTask}
+                    sectionsList={sectionsList}
+                />
                 <button
                     type="button"
                     className="btn btn-large btn-light rounded-circle"

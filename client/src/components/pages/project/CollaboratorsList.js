@@ -69,31 +69,9 @@ class CollaratorsList extends Component {
                         if (!user.image_url)
                             user.image_url =
                                 'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
-                        return (
-                            <li
-                                className="list-group-item list-group-item-action d-flex align-items-center"
-                                style={{ cursor: 'pointer', zIndex: 15 }}
-                                onClick={() => {
-                                    this.state.input.value = user.username;
-                                    this.getSuggests();
-                                    this.setState({ suggest: false });
-                                }}
-                            >
-                                <img
-                                    className="rounded-circle mr-4"
-                                    src={user.image_url}
-                                    style={{ width: '2em', height: '2em' }}
-                                />
-                                {user.username}
-                            </li>
-                        );
+                        return <option value={user.username} />;
                     });
-                    let result = (
-                        <ul className="list-group list-group-flush text-dark">
-                            {usersList}
-                        </ul>
-                    );
-                    this.setState({ suggestsDivList: result });
+                    this.setState({ suggestsDivList: usersList });
                 }
             });
     }
@@ -112,30 +90,15 @@ class CollaratorsList extends Component {
                         <div className="col-lg-3 col-md-5 col-12">
                             <input
                                 type="text"
+                                list="datalistColSuggests"
                                 className="form-control form-control-lg form-group"
                                 id="search-collab"
                                 placeholder="Ajouter un collaborateur"
                                 onChange={this.getSuggests}
-                                onFocus={() => this.setState({ suggest: true })}
                             />
-                            <div
-                                className="rounded-bottom"
-                                style={{
-                                    position: 'absolute',
-                                    height: this.state.suggest ? '' : '0',
-                                    overflow: 'hidden',
-                                    transitionDuration: '0.5s',
-                                    top:
-                                        this.state.input &&
-                                        this.state.input.clientHeight - 8,
-                                    width:
-                                        this.state.input &&
-                                        this.state.input.clientWidth,
-                                    zIndex: 10,
-                                }}
-                            >
+                            <datalist id="datalistColSuggests">
                                 {this.state.suggestsDivList}
-                            </div>
+                            </datalist>
                         </div>
                         <div className="col-12 col-md-auto">
                             <button

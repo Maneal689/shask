@@ -209,10 +209,12 @@ class TasksList extends Component {
     }
 
     render() {
+        let sectionsList = this.getSections(this.props.list);
         return (
             <div id="tasks-list" className="col-12">
                 <EditTaskModal
                     fallback={this.validEditTask}
+                    sectionsList={sectionsList}
                     default={
                         this.state.defaultEditModal
                             ? this.state.defaultEditModal

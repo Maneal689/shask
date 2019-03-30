@@ -167,20 +167,12 @@ async function search(req, res) {
     let userId = jwtUtils.getUserId(req);
     if (userId) {
         let q = req.body.query;
-        let id = parseInt(q);
+        q = q.toLowerCase();
         let userList = [];
         let { rows } = await db.query(
-            `SELECT id_user, username, image_url FROM Users WHERE username LIKE '%${q}%'`
+            `SELECT id_user, username FROM Users WHERE LOWER(username) LIKE '%${q}%' LIMIT 10`
         );
         if (rows) rows.forEach(user => userList.push(user));
-        if (id) {
-            let result = await db.query(
-                'SELECT id_user, username, image_url FROM Users WHERE id_user=$1',
-                [q]
-            );
-            let row = result.rowCount > 0 ? result.rows[0] : undefined;
-            if (row) userList.push(row);
-        }
         res.status(200).json({ status: 'OK', userList });
     } else
         res.status(400).json({

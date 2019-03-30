@@ -46,7 +46,13 @@ class EditTaskModal extends Component {
                                     className="form-control form-control-lg form-group"
                                     id="sectionInputEditModal"
                                     placeholder="Section"
+                                    list="sectionSuggestList2"
                                 />
+                                <datalist id="sectionSuggestList2">
+                                    {this.props.sectionsList.map(section => (
+                                        <option value={section} />
+                                    ))}
+                                </datalist>
                                 <StarRating
                                     id="starRatingEdit1"
                                     desc="Priorité: "
