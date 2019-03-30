@@ -58,7 +58,7 @@ class EditTaskModal extends Component {
                                     desc="Priorité: "
                                     default={this.props.default.priority}
                                     nbStar={5}
-                                    color="yellow"
+                                    color="#17A2B8"
                                     editable={true}
                                 />
                                 <StarRating
@@ -66,7 +66,7 @@ class EditTaskModal extends Component {
                                     desc="Difficulté: "
                                     default={this.props.default.difficulty}
                                     nbStar={5}
-                                    color="red"
+                                    color="#FF770F"
                                     editable={true}
                                 />
                             </form>

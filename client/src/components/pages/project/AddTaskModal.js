@@ -51,7 +51,7 @@ class AddTaskModal extends Component {
                                     id="starRating1"
                                     desc="Priorité: "
                                     nbStar={5}
-                                    color="yellow"
+                                    color="#17A2B8"
                                     editable={true}
                                     default={0}
                                 />
@@ -59,7 +59,7 @@ class AddTaskModal extends Component {
                                     id="starRating2"
                                     desc="Difficulté: "
                                     nbStar={5}
-                                    color="red"
+                                    color="#FF770F"
                                     editable={true}
                                     default={0}
                                 />

@@ -19,7 +19,7 @@ class NavigationBar extends Component {
         return (
             <div
                 className="fixed-top d-flex justify-content-between align-items-center p-2"
-                style={{ backgroundColor: 'rgba(0, 0, 0, 0.1)' }}
+                style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}
             >
                 <button
                     style={{ cursor: 'pointer' }}

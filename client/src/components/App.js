@@ -19,7 +19,7 @@ class App extends Component {
     render() {
         return (
             <Router>
-                <div className="container-fluid bg-dark min-vh-100 text-light">
+                <div className="container-fluid min-vh-100">
                     <Route exact path="/" component={Welcome} />
                     <Route path="/dashboard" component={DashBoard} />
                     <Route path="/project/:id" component={ProjectPage} />

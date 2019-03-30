@@ -29,7 +29,7 @@ class CollaboratorList extends Component {
                 userData.image_url =
                     'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
             return (
-                <li className="list-group-item bg-dark text-light">
+                <li className="list-group-item">
                     <div className="d-flex" style={{ maxHeight: '2em' }}>
                         <img
                             className="mr-5 rounded-circle"
@@ -53,7 +53,6 @@ class CollaboratorList extends Component {
         return (
             <div>
                 <a
-                    className="text-light"
                     data-toggle="collapse"
                     style={{ textDecoration: 'none' }}
                     href={(() => '#' + id)()}
@@ -63,9 +62,9 @@ class CollaboratorList extends Component {
                 <div className="collapse show" id={id}>
                     <ul className="list-group list-group-flush">
                         {userTabList || (
-                            <li class="list-group-item bg-dark">
+                            <li class="list-group-item">
                                 <div
-                                    className="spinner-border text-light"
+                                    className="spinner-border"
                                     role="status"
                                 >
                                     <span className="sr-only">Loading...</span>

@@ -42,7 +42,7 @@ class DashBoard extends Component {
                 <NavigationBar />
                 <button
                     type="button"
-                    className="btn btn-large btn-light rounded-circle"
+                    className="btn btn-large btn-outline-primary rounded-circle"
                     style={{
                         position: 'fixed',
                         right: '50px',
@@ -50,14 +50,14 @@ class DashBoard extends Component {
                         zIndex: 1000,
                     }}
                     onClick={() => {
-                        let projectTitle = window.prompt("Titre du projet:");
+                        let projectTitle = window.prompt('Titre du projet:');
                         if (projectTitle && projectTitle.length > 0)
                             this.createProject(projectTitle);
                     }}
                 >
                     +
                 </button>
-                <div className="row">
+                {/*
                     <div
                         id="collaborators-pan"
                         className="col-lg-3 col-md-5 col-sm-12"
@@ -68,12 +68,8 @@ class DashBoard extends Component {
                             myId={this.state.me && this.state.me.id_user}
                         />
                     </div>
-                    <div className="col">
-                        <ProjectsList
-                            projectsIdList={this.state.projectsIdList}
-                        />
-                    </div>
-                </div>
+                            */}
+                <ProjectsList projectsIdList={this.state.projectsIdList} />
             </div>
         );
     }

@@ -63,7 +63,7 @@ class TasksList extends Component {
         return (
             <li
                 key={task.id_task}
-                className="list-group-item bg-dark text-light"
+                className="list-group-item"
                 style={{ fontSize: '1.1em' }}
             >
                 <div className="row d-flex flex-row align-items-center">
@@ -86,7 +86,7 @@ class TasksList extends Component {
                         <div className="d-flex flex-row flex-lg-column justify-content-between justify-content-sm-start">
                             <StarRating
                                 default={task.priority}
-                                color="yellow"
+                                color="#17A2B8"
                                 nbStar={5}
                                 editable={false}
                                 id={(() =>
@@ -96,7 +96,7 @@ class TasksList extends Component {
                             <StarRating
                                 className="ml-sm-5 ml-lg-0"
                                 default={task.difficulty}
-                                color="red"
+                                color="#FF770F"
                                 nbStar={5}
                                 editable={false}
                                 id={(() => 'starRatingDif' + task.id_task)()}
@@ -179,7 +179,7 @@ class TasksList extends Component {
                             <li
                                 data-toggle="collapse"
                                 data-target={(() => '#' + cId)()}
-                                className="list-group-item list-group-item-action bg-secondary d-flex justify-content-center align-items-center text-light"
+                                className="list-group-item list-group-item-action d-flex justify-content-center align-items-center"
                                 style={{ cursor: 'pointer' }}
                             >
                                 <h4>
@@ -245,7 +245,7 @@ class TasksList extends Component {
                         </label>
                     </div>
                 </div>
-                <ul className="col-12 list-group list-group-flush bg-dark text-light">
+                <ul className="col-12 list-group list-group-flush">
                     {this.getTasksDiv(this.props.list)}
                 </ul>
             </div>

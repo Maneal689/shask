@@ -207,7 +207,7 @@ class ProjectPage extends Component {
         if (!this.state.init) {
             return (
                 <div className="col-12 hv-100">
-                    <div className="spinner-border text-light" role="status">
+                    <div className="spinner-border" role="status">
                         <span className="sr-only">Loading...</span>
                     </div>
                 </div>
@@ -245,7 +245,7 @@ class ProjectPage extends Component {
                 />
                 <button
                     type="button"
-                    className="btn btn-large btn-light rounded-circle"
+                    className="btn btn-large btn-outline-primary rounded-circle"
                     data-toggle="modal"
                     data-target="#addTaskModal"
                     style={{
@@ -258,7 +258,7 @@ class ProjectPage extends Component {
                     +
                 </button>
                 <div className="row justify-content-center align-items-center">
-                    <h1 className="text-info">{this.state.title}</h1>
+                    <h1 className="display-2">{this.state.title}</h1>
                     <button
                         className="ml-3 btn btn-sm rounded-circle btn-light"
                         onClick={this.editProjectName}

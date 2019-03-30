@@ -5,7 +5,6 @@ class Project extends Component {
         super(props);
         this.state = {};
         this.projectCard = this.projectCard.bind(this);
-        this.getProjectsTabList = this.getProjectsTabList.bind(this);
     }
 
     projectCard(data) {
@@ -18,7 +17,7 @@ class Project extends Component {
             let percent = (nbTasksChecked / nbTasks) * 100;
             return (
                 <a
-                    className="list-group-item list-group-item-action bg-dark text-light"
+                    className="list-group-item list-group-item-action"
                     href={(() => '/project/' + data.id_project)()}
                 >
                     <div className="d-flex flex-column">
@@ -63,20 +62,20 @@ class Project extends Component {
         }
     }
 
-    getProjectsTabList() {
+    render() {
         let projectsTabList = undefined;
         if (this.state.projectsList)
             projectsTabList = this.state.projectsList.map(elm =>
                 this.projectCard(elm)
             );
         return (
-            <div className="text-light mb-3 border-0 text-center">
+            <div className="mb-3 border-0 text-center">
                 <h3>Projets</h3>
                 <div className="list-group list-group-flush">
                     {projectsTabList || (
-                        <div class="list-group-item bg-dark">
+                        <div class="list-group-item">
                             <div
-                                className="spinner-border text-light"
+                                className="spinner-border"
                                 role="status"
                             >
                                 <span className="sr-only">Loading...</span>
@@ -86,10 +85,6 @@ class Project extends Component {
                 </div>
             </div>
         );
-    }
-
-    render() {
-        return <div>{this.getProjectsTabList()}</div>;
     }
 }
 
