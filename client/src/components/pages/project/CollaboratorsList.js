@@ -70,7 +70,7 @@ class CollaratorsList extends Component {
             .then(res => res.json())
             .then(data => {
                 if (data.status === 'OK')
-                    this.setState({ input, suggests: data.userList });
+                    this.setState({ suggests: data.userList });
             });
     }
 
