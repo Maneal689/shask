@@ -1,17 +1,48 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import $ from 'jquery';
+
 import StarRating from '../StarRating';
+import { configAddModal, addTask } from '../../../redux/actions';
 
 class AddTaskModal extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { titleError: false };
+        this.addTask = this.addTask.bind(this);
+    }
+
+    addTask(taskInfo) {
+        fetch('/api/project/' + this.props.projectId + '/addTask', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(taskInfo),
+        })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'OK') {
+                    taskInfo.id_task = data.id_task;
+                    taskInfo.username = this.props.username;
+                    this.props.addTask(taskInfo);
+                    $('#' + this.props.id).modal('hide');
+                    this.props.configAddModal({
+                        title: '',
+                        description: '',
+                        priority: 0,
+                        difficulty: 0,
+                        state: 1,
+                    });
+                } else console.error(data);
+            });
     }
 
     render() {
         return (
             <div
                 className="modal fade text-dark"
-                id="addTaskModal"
+                id={this.props.id}
                 role="dialog"
                 aria-hidden="true"
             >
@@ -30,39 +61,111 @@ class AddTaskModal extends Component {
                         </div>
                         <div class="modal-body">
                             <form>
-                                <textarea
-                                    className="form-control form-control-lg form-group"
-                                    id="descInputModal"
-                                    placeholder="Description"
-                                />
                                 <input
                                     type="text"
+                                    className={(() => {
+                                        return (
+                                            'form-control form-control-lg form-group' +
+                                            (this.state.titleError
+                                                ? ' is-invalid'
+                                                : '')
+                                        );
+                                    })()}
+                                    placeholder="Titre"
+                                    value={this.props.config.title}
+                                    onChange={e => {
+                                        let title = e.target.value;
+                                        this.props.configAddModal({ title });
+                                    }}
+                                />
+                                <textarea
                                     className="form-control form-control-lg form-group"
-                                    id="sectionInputModal"
-                                    placeholder="Section"
-                                    list="sectionSuggestList"
+                                    placeholder="Description"
+                                    value={this.props.config.description}
+                                    onChange={e => {
+                                        let description = e.target.value;
+                                        this.props.configAddModal({
+                                            description,
+                                        });
+                                    }}
                                 />
-                                <datalist id="sectionSuggestList">
-                                    {this.props.sectionsList.map(section => (
-                                        <option value={section} />
-                                    ))}
-                                </datalist>
-                                <StarRating
-                                    id="starRating1"
-                                    desc="Priorité: "
-                                    nbStar={5}
-                                    color="#17A2B8"
-                                    editable={true}
-                                    default={0}
-                                />
-                                <StarRating
-                                    id="starRating2"
-                                    desc="Difficulté: "
-                                    nbStar={5}
-                                    color="#FF770F"
-                                    editable={true}
-                                    default={0}
-                                />
+                                <div className="form-group">
+                                    <label htmlFor="stateInputEditModal">
+                                        Etat:
+                                    </label>
+                                    <select
+                                        className="form-control form-control-lg"
+                                        onChange={e => {
+                                            let state = parseInt(
+                                                e.target.value
+                                            );
+                                            this.props.configAddModal({
+                                                state,
+                                            });
+                                        }}
+                                    >
+                                        <option
+                                            value="1"
+                                            selected={
+                                                this.props.config.state === 1
+                                            }
+                                        >
+                                            Idée
+                                        </option>
+                                        <option
+                                            value="2"
+                                            selected={
+                                                this.props.config.state === 2
+                                            }
+                                        >
+                                            A faire
+                                        </option>
+                                        <option
+                                            value="3"
+                                            selected={
+                                                this.props.config.state === 3
+                                            }
+                                        >
+                                            En cours
+                                        </option>
+                                        <option
+                                            value="4"
+                                            selected={
+                                                this.props.config.state === 4
+                                            }
+                                        >
+                                            Terminé
+                                        </option>
+                                    </select>
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <span>Priorité:</span>
+                                    <StarRating
+                                        default={this.props.config.priority}
+                                        nbStar={5}
+                                        color="#17A2B8"
+                                        editable={true}
+                                        fallback={val => {
+                                            this.props.configAddModal({
+                                                priority: val,
+                                            });
+                                        }}
+                                    />
+                                </div>
+                                <div className="d-flex justify-content-between">
+                                    <span>Difficulté:</span>
+                                    <StarRating
+                                        default={this.props.config.difficulty}
+                                        nbStar={5}
+                                        color="#FF770F"
+                                        editable={true}
+                                        fallback={val => {
+                                            this.props.configAddModal({
+                                                difficulty: val,
+                                            });
+                                        }}
+                                    />
+                                </div>
                             </form>
                         </div>
                         <div class="modal-footer">
@@ -77,43 +180,20 @@ class AddTaskModal extends Component {
                                 type="button"
                                 class="btn btn-primary"
                                 onClick={() => {
-                                    let taskInfo = {};
-                                    taskInfo.priority = document.getElementById(
-                                        'starRating1'
-                                    ).value;
-                                    taskInfo.difficulty = document.getElementById(
-                                        'starRating2'
-                                    ).value;
-                                    taskInfo.description = document.getElementById(
-                                        'descInputModal'
-                                    ).value;
-                                    if (taskInfo.description)
-                                        taskInfo.description = taskInfo.description.trim();
-                                    taskInfo.section = document.getElementById(
-                                        'sectionInputModal'
-                                    ).value;
-                                    if (taskInfo.section)
-                                        taskInfo.section = taskInfo.section.trim();
-                                    if (taskInfo.section.length === 0)
-                                        taskInfo.section = undefined;
-                                    if (taskInfo.description.length <= 1) {
-                                        let descInput = document.getElementById(
-                                            'descInputModal'
-                                        );
-                                        if (
-                                            !descInput.classList.contains(
-                                                'is-invalid'
-                                            )
-                                        )
-                                            descInput.classList.add(
-                                                'is-invalid'
-                                            );
-                                    } else {
-                                        this.props.fallback(taskInfo);
-                                    }
+                                    let taskInfo = {
+                                        id_task: this.props.config.id_task,
+                                    };
+                                    taskInfo.priority = this.props.config.priority;
+                                    taskInfo.difficulty = this.props.config.difficulty;
+                                    taskInfo.description = this.props.config.description.trim();
+                                    taskInfo.title = this.props.config.title.trim();
+                                    taskInfo.state = this.props.config.state;
+                                    if (taskInfo.title.length > 1)
+                                        this.addTask(taskInfo);
+                                    else this.setState({ titleError: true });
                                 }}
                             >
-                                Créer
+                                Valider
                             </button>
                         </div>
                     </div>
@@ -123,4 +203,19 @@ class AddTaskModal extends Component {
     }
 }
 
-export default AddTaskModal;
+function mapStateToProps(state) {
+    return {
+        config: state.addModalConfig,
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        configAddModal: config => dispatch(configAddModal(config)),
+        addTask: taskInfo => dispatch(addTask(taskInfo)),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AddTaskModal);

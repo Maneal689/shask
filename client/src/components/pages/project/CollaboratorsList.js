@@ -1,16 +1,22 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+
+import { addCollaborator } from '../../../redux/actions';
+import { removeCollaborator } from '../../../redux/actions';
 
 class CollaratorsList extends Component {
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = { input: '', suggests: [] };
         this.getUsersDiv = this.getUsersDiv.bind(this);
-        this.getSuggests = this.getSuggests.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.addCollaborator = this.addCollaborator.bind(this);
+        this.removeCollaborator = this.removeCollaborator.bind(this);
     }
 
     getUsersDiv() {
         let res = [];
-        let list = this.props.list;
+        let list = this.props.collaboratorsList;
         if (list) {
             res = list.map(user => {
                 if (!user.image_url)
@@ -31,7 +37,7 @@ class CollaratorsList extends Component {
                                     <button
                                         className="btn btn-danger btn-sm ml-2"
                                         onClick={() =>
-                                            this.props.removeCollab(
+                                            this.removeCollaborator(
                                                 user.id_user
                                             )
                                         }
@@ -47,12 +53,11 @@ class CollaratorsList extends Component {
         return res;
     }
 
-    getSuggests() {
-        let input = this.state.input;
-        if (!input) return null;
-        let text = input.value;
-        if (text.length < 1) {
-            this.setState({ suggestsDivList: [] });
+    handleChange(e) {
+        let input = e.target.value;
+        this.setState({input});
+        if (input.length < 1) {
+            this.setState({ suggests: [] });
             return null;
         }
         fetch('/api/user/search', {
@@ -60,24 +65,44 @@ class CollaratorsList extends Component {
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ query: text }),
+            body: JSON.stringify({ query: input }),
         })
             .then(res => res.json())
             .then(data => {
-                if (data.status === 'OK') {
-                    let usersList = data.userList.map(user => {
-                        if (!user.image_url)
-                            user.image_url =
-                                'https://upload.wikimedia.org/wikipedia/commons/3/3c/Cc-by_new.svg';
-                        return <option value={user.username} />;
-                    });
-                    this.setState({ suggestsDivList: usersList });
-                }
+                if (data.status === 'OK')
+                    this.setState({ input, suggests: data.userList });
             });
     }
 
-    componentDidMount() {
-        this.setState({ input: document.getElementById('search-collab') });
+    addCollaborator(username) {
+        if (username && username.length > 0) {
+            fetch('/api/project/' + this.props.projectId + '/addCollaborator', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username }),
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status === 'OK')
+                        this.props.addCollaborator(data.userInfo);
+                });
+        }
+    }
+
+    removeCollaborator(id_user) {
+        let url =
+            '/api/project/' +
+            this.props.projectId +
+            '/removeCollaborator?id=' +
+            id_user;
+        fetch(url, { method: 'GET' })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'OK')
+                    this.props.removeCollaborator(id_user);
+            });
     }
 
     render() {
@@ -92,19 +117,21 @@ class CollaratorsList extends Component {
                                 type="text"
                                 list="datalistColSuggests"
                                 className="form-control form-control-lg form-group"
-                                id="search-collab"
                                 placeholder="Ajouter un collaborateur"
-                                onChange={this.getSuggests}
+                                value={this.state.input}
+                                onChange={this.handleChange}
                             />
                             <datalist id="datalistColSuggests">
-                                {this.state.suggestsDivList}
+                                {this.state.suggests.map(user => (
+                                    <option value={user.username} />
+                                ))}
                             </datalist>
                         </div>
                         <div className="col-12 col-md-auto">
                             <button
                                 className="btn btn-lg btn-info mb-2"
                                 onClick={() =>
-                                    this.props.fallback(this.state.input.value)
+                                    this.addCollaborator(this.state.input)
                                 }
                             >
                                 Ajouter
@@ -118,4 +145,19 @@ class CollaratorsList extends Component {
     }
 }
 
-export default CollaratorsList;
+function mapStateToProps(state) {
+    return {
+        collaboratorsList: state.collaboratorsList,
+    };
+}
+function mapDispatchToProps(dispatch) {
+    return {
+        addCollaborator: userInfo => dispatch(addCollaborator(userInfo)),
+        removeCollaborator: userId => dispatch(removeCollaborator(userId)),
+    };
+}
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(CollaratorsList);

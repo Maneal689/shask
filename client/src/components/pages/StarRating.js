@@ -6,80 +6,46 @@ class StarRating extends Component {
         this.state = { hovered: -1 };
     }
 
-    componentDidMount() {
-        let me = document.getElementById(this.props.id);
-        me.value = 0;
-        if (this.props.default != undefined) {
-            me.value = this.props.default;
-        }
-        this.setState({ me, value: me.value });
-    }
-
-    componentDidUpdate() {
-        if (this.props.default != undefined && this.state.me.value !== this.props.default) {
-            let me = this.state.me;
-            me.value = this.props.default;
-            this.setState({ me, value: me.value });
-        }
-    }
-
     render() {
         let starList = [];
-        if (this.state.me) {
-            let checkedStyle = { color: this.props.color, cursor: 'pointer' };
-            for (let i = 0; i < this.props.nbStar; i++)
-                if (this.props.editable)
-                    starList.push(
-                        <i
-                            className={
-                                i < this.state.me.value
-                                    ? 'fas fa-star'
-                                    : 'far fa-star'
-                            }
-                            style={
-                                i < this.state.me.value ||
-                                this.state.hovered >= i
-                                    ? checkedStyle
-                                    : { cursor: 'pointer' }
-                            }
-                            onMouseEnter={() => this.setState({ hovered: i })}
-                            onMouseLeave={() => this.setState({ hovered: -1 })}
-                            onClick={() => {
-                                let me = this.state.me;
-                                me.value = i + 1;
-                                this.props.default = undefined;
-                                this.setState({ me, value: this.state.me.value });
-                            }}
-                        />
-                    );
-                else
-                    starList.push(
-                        <i
-                            className={
-                                i < this.state.me.value
-                                    ? 'fas fa-star'
-                                    : 'far fa-star'
-                            }
-                            style={
-                                i < this.state.me.value
-                                    ? { color: this.props.color }
-                                    : {}
-                            }
-                        />
-                    );
-        }
-        return (
-            <div
-                id={this.props.id}
-                className={
-                    this.props.className ||
-                    'd-flex flex-row justify-content-between'
-                }
-            >
-                {this.props.desc && <div>{this.props.desc}</div>}
-                <div title={this.props.title}>{starList}</div>
-            </div>
-        );
+        let checkedStyle = { color: this.props.color, cursor: 'pointer' };
+        for (let i = 0; i < this.props.nbStar; i++)
+            if (this.props.editable)
+                starList.push(
+                    <i
+                        className={
+                            i < this.props.default
+                                ? 'fas fa-star'
+                                : 'far fa-star'
+                        }
+                        style={
+                            i < this.props.default || this.state.hovered >= i
+                                ? checkedStyle
+                                : { cursor: 'pointer' }
+                        }
+                        onMouseEnter={() => this.setState({ hovered: i })}
+                        onMouseLeave={() => this.setState({ hovered: -1 })}
+                        onClick={() => {
+                            this.props.fallback(i + 1);
+                        }}
+                    />
+                );
+            else
+                starList.push(
+                    <i
+                        className={
+                            i < this.props.default
+                                ? 'fas fa-star'
+                                : 'far fa-star'
+                        }
+                        style={
+                            i < this.props.default
+                                ? { color: this.props.color }
+                                : {}
+                        }
+                    />
+                );
+        return <div title={this.props.title}>{starList}</div>;
     }
 }
 

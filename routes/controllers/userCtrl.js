@@ -45,11 +45,10 @@ async function register(req, res) {
             errList: errReport,
         });
     else {
-        let lastId = await dbUtils.getUserLastId() + 1;
         bcrypt.hash(req.body.password, 10).then(hash => {
             db.query(
-                'INSERT INTO Users(id_user, username, email, password) VALUES($1, $2, $3, $4)',
-                [lastId, req.body.username, req.body.email, hash]
+                'INSERT INTO Users(username, email, password) VALUES($1, $2, $3)',
+                [req.body.username, req.body.email, hash]
             )
                 .then((error, rows) => res.status(200).json({ status: 'OK' }))
                 .catch(error => console.error(error));
@@ -91,10 +90,20 @@ async function login(req, res) {
         });
 }
 
-function logged(req, res) {
+async function logged(req, res) {
     let userId = jwtUtils.getUserId(req);
-    if (userId) res.status(200).json({ status: 'OK', id_user: userId });
-    else
+    if (userId) {
+        let username = undefined;
+        let { rows } = await db.query(
+            'SELECT username FROM Users where id_user=$1',
+            [userId]
+        );
+        if (rows && rows.length > 0) username = rows[0].username;
+        res.status(200).json({
+            status: 'OK',
+            userInfo: { myId: userId, username },
+        });
+    } else
         res.status(400).json({
             status: 'ERROR',
             desc: 'MISSING OR INVALID TOKEN',

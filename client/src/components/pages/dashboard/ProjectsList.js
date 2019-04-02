@@ -11,7 +11,7 @@ class Project extends Component {
         if (data) {
             let nbTasks = data.tasksList.length;
             let nbTasksChecked = data.tasksList.reduce(
-                (acc, elm) => acc + elm.checked,
+                (acc, elm) => acc + (elm.state === 4 ? 1 : 0),
                 0
             );
             let percent = (nbTasksChecked / nbTasks) * 100;
@@ -74,10 +74,7 @@ class Project extends Component {
                 <div className="list-group list-group-flush">
                     {projectsTabList || (
                         <div class="list-group-item">
-                            <div
-                                className="spinner-border"
-                                role="status"
-                            >
+                            <div className="spinner-border" role="status">
                                 <span className="sr-only">Loading...</span>
                             </div>
                         </div>

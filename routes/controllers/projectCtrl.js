@@ -30,10 +30,11 @@ async function collaborators(req, res) {
 async function allInfos(req, res) {
     let projectId = req.params.id;
     let userId = jwtUtils.getUserId(req);
+    let infos = {};
+    let isPtU = await dbUtils.isProjectToUser(projectId, userId);
+    infos.creator = isPtU.creator;
     if (userId) {
-        if (await dbUtils.isProjectToUser(projectId, userId)) {
-            let infos = {};
-
+        if (isPtU) {
             let res1 = await db.query(
                 'SELECT * FROM Projects WHERE id_project=$1',
                 [projectId]
@@ -41,17 +42,11 @@ async function allInfos(req, res) {
 
             if (res1.rowCount > 0) {
                 let { id_project, description, title } = res1.rows[0];
-                infos.myId = userId;
                 infos.id_project = id_project;
                 infos.description = description;
                 infos.title = title;
-                let tmp = await db.query(
-                    'SELECT creator FROM Own WHERE id_user=$1 AND id_project=$2',
-                    [userId, projectId]
-                );
-                if (tmp.rowCount > 0) infos.creator = tmp.rows[0].creator;
                 var { rows } = await db.query(
-                    'SELECT * FROM Tasks WHERE id_project=$1',
+                    'SELECT id_task, title, description, state, priority, difficulty, username FROM tasks, users WHERE id_project=$1 AND tasks.id_user=users.id_user',
                     [projectId]
                 );
                 infos.tasksList = rows;
@@ -64,11 +59,7 @@ async function allInfos(req, res) {
                     status: 'OK',
                     infos,
                 });
-            } else
-                res.status(400).json({
-                    status: 'ERROR',
-                    desc: 'Project not owned',
-                });
+            }
         } else
             res.status(400).json({
                 status: 'ERROR',
@@ -85,19 +76,26 @@ async function create(req, res) {
     let userId = jwtUtils.getUserId(req);
     let projectTitle = req.body.title;
     if (userId && projectTitle && projectTitle.length > 0) {
-        let lastId = (await dbUtils.getProjectLastId()) + 1;
-        await db.query(
-            'INSERT INTO Projects (id_project, title) VALUES ($1, $2)',
-            [lastId, projectTitle]
+        let lastId = undefined;
+        let result = await db.query(
+            'INSERT INTO Projects (title) VALUES ($1) RETURNING id_project',
+            [projectTitle]
         );
-        db.query(
-            'INSERT INTO Own (id_user, id_project, creator) VALUES ($1, $2, $3)',
-            [userId, lastId, 1]
-        );
-        res.status(200).json({
-            status: 'OK',
-            id_project: lastId,
-        });
+        if (result.rows && result.rows.length > 0) {
+            lastId = result.rows[0]['id_project'];
+            db.query(
+                'INSERT INTO Own (id_user, id_project, creator) VALUES ($1, $2, $3)',
+                [userId, lastId, 1]
+            );
+            res.status(200).json({
+                status: 'OK',
+                id_project: lastId,
+            });
+        } else
+            res.status(400).json({
+                status: 'ERROR',
+                desc: 'Error while insert new project',
+            });
     } else
         res.status(400).json({
             status: 'ERROR',
@@ -110,24 +108,31 @@ async function addTask(req, res) {
     if (userId) {
         let projectId = req.params.id;
         if (await dbUtils.isProjectToUser(projectId, userId)) {
-            let { description, priority, difficulty, section } = req.body;
-            let lastId = (await dbUtils.getTaskLastId()) + 1;
+            let { title, description, state, priority, difficulty } = req.body;
+            let lastId = undefined;
             let result = await db.query(
-                'INSERT INTO Tasks(id_task, description, checked, priority, difficulty, id_project, section) VALUES($1, $2, $3, $4, $5, $6, $7)',
+                'INSERT INTO Tasks(title, description, state, priority, difficulty, id_project, id_user) VALUES($1, $2, $3, $4, $5, $6, $7) RETURNING id_task',
                 [
-                    lastId,
+                    title,
                     description,
-                    0,
+                    state,
                     priority,
                     difficulty,
                     projectId,
-                    section,
+                    userId,
                 ]
             );
-            res.status(200).json({
-                status: 'OK',
-                id_task: lastId,
-            });
+            if (result.rows && result.rows.length > 0) {
+                lastId = result.rows[0]['id_task'];
+                res.status(200).json({
+                    status: 'OK',
+                    id_task: lastId,
+                });
+            } else
+                res.status(400).json({
+                    status: 'ERROR',
+                    desc: 'Error while insert',
+                });
         } else
             res.status(400).json({
                 status: 'ERROR',
@@ -156,20 +161,19 @@ async function addCollaborator(req, res) {
             );
             if (rows.length > 0) {
                 let row = rows[0];
+                //Verify if collaborator isn't already added
                 let resultQuery = await db.query(
-                    'SELECT id_user, id_project, creator FROM Own WHERE id_user=$1 AND id_project=$2',
+                    'SELECT * FROM Own WHERE id_user=$1 AND id_project=$2',
                     [row.id_user, projectId]
                 );
-                let row2 =
-                    resultQuery.rowCount > 0 ? resultQuery.rows[0] : undefined;
-                if (!row2) {
+                if (!resultQuery.rowCount || resultQuery.rowCount <= 0) {
                     db.query(
                         'INSERT INTO Own(id_user, id_project) VALUES ($1, $2)',
                         [row.id_user, projectId]
                     );
                     res.status(200).json({
                         status: 'OK',
-                        user: row,
+                        userInfo: row,
                     });
                 }
             }
