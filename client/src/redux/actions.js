@@ -3,7 +3,7 @@ export const CONFIG_PROJECT_PAGE = 'CONFIG_PROJECT_PAGE';
 export const EXIT_PROJECT_PAGE = 'EXIT_PROJECT_PAGE';
 
 export const ADD_TASK = 'ADD_TASK';
-export const CONFIG_TASK = 'CONFIG_TASK';
+export const EDIT_TASK = 'CONFIG_TASK';
 export const REMOVE_TASK = 'REMOVE_TASK';
 
 export const CONFIG_EDIT_MODAL = 'CONFIG_EDIT_MODAL';
@@ -27,7 +27,7 @@ export function addTask(taskInfo) {
     return { type: ADD_TASK, taskInfo };
 }
 export function editTask(taskInfo) {
-    return { type: CONFIG_TASK, taskInfo };
+    return { type: EDIT_TASK, taskInfo };
 }
 export function removeTask(taskId) {
     return { type: REMOVE_TASK, taskId };
