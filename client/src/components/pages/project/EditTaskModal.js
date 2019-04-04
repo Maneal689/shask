@@ -64,20 +64,16 @@ class EditTaskModal extends Component {
                     let state = parseInt(e.target.value);
                     this.props.configEditModal({state});
                   }}>
-                  <option value="1" selected={this.props.config.state === 1
-}>
+                  <option value="1" selected={this.props.config.state === 1}>
                     Idée
                   </option>
-                  <option value="2" selected={this.props.config.state === 2
-}>
+                  <option value="2" selected={this.props.config.state === 2}>
                     A faire
                   </option>
-                  <option value="3" selected={this.props.config.state === 3
-}>
+                  <option value="3" selected={this.props.config.state === 3}>
                     En cours
                   </option>
-                  <option value="4" selected={this.props.config.state === 4
-}>
+                  <option value="4" selected={this.props.config.state === 4}>
                     Terminé
                   </option>
                 </select>
