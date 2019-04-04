@@ -1,78 +1,95 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 
 import CollaboratorList from './CollaboratorList';
 import ProjectsList from './ProjectsList';
 import NavigationBar from '../NavigationBar';
 
 class DashBoard extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
-        this.createProject = this.createProject.bind(this);
-    }
+  constructor(props) {
+    super(props);
+    this.state = {};
+    this.createProject = this.createProject.bind(this);
+  }
 
-    componentDidMount() {
-        fetch('/api/user/me', { method: 'GET' })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'OK') {
-                    this.setState(data.infos);
-                } else {
-                    document.location.href = '/';
-                }
-            });
-    }
+  componentDidMount() {
+    fetch('/api/user/me', {method: 'GET'}).then(res => res.json()).then(data => {
+      if (data.status === 'OK')
+        this.setState(data.infos);
+      else
+        document.location.href = '/';
+      }
+    );
+  }
 
-    createProject(title) {
-        fetch('/api/project/create', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title }),
-        })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'OK')
-                    document.location.href = '/project/' + data.id_project;
-            });
-    }
+  createProject(title) {
+    fetch('/api/project/create', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({title})
+    }).then(res => res.json()).then(data => {
+      if (data.status === 'OK')
+        document.location.href = '/project/' + data.id_project;
+      }
+    );
+  }
 
-    render() {
-        return (
-            <div className="min-vh-100 pt-5">
-                <NavigationBar />
-                <button
-                    type="button"
-                    className="btn btn-large btn-outline-primary rounded-circle"
-                    style={{
-                        position: 'fixed',
-                        right: '50px',
-                        bottom: '50px',
-                        zIndex: 1000,
-                    }}
-                    onClick={() => {
-                        let projectTitle = window.prompt('Titre du projet:');
-                        if (projectTitle && projectTitle.length > 0)
-                            this.createProject(projectTitle);
-                    }}
-                >
-                    +
-                </button>
-                {/*
-                    <div
-                        id="collaborators-pan"
-                        className="col-lg-3 col-md-5 col-sm-12"
-                    >
-                        <CollaboratorList
-                            friendsIdList={this.state.friendsIdList}
-                            projectsIdList={this.state.projectsIdList}
-                            myId={this.state.me && this.state.me.id_user}
-                        />
-                    </div>
-                            */}
-                <ProjectsList projectsIdList={this.state.projectsIdList} />
+  render() {
+    let myProjectsIdList = undefined;
+    let otherProjectsIdList = undefined;
+    if (this.state.projectsIdList) {
+      myProjectsIdList = this.state.projectsIdList.filter((elm) => elm.creator === 1).map(elm => elm.id_project);
+      otherProjectsIdList = this.state.projectsIdList.filter((elm) => elm.creator === 0).map(elm => elm.id_project);
+    }
+    return (<div className="min-vh-100 pt-5">
+      <NavigationBar/>
+      <button type="button" className="btn btn-large btn-outline-primary rounded-circle" style={{
+          position: 'fixed',
+          right: '50px',
+          bottom: '50px',
+          zIndex: 1000
+        }} onClick={() => {
+          let projectTitle = window.prompt('Titre du projet:');
+          if (projectTitle && projectTitle.length > 0)
+            this.createProject(projectTitle);
+          }}>
+        +
+      </button>
+      <h3>Projets</h3>
+      {
+        (this.state.projectsIdList && <div>
+          <nav>
+            <div className="nav nav-tabs" role="tablist">
+              <a className="nav-item nav-link active d-block w-50 text-center font-weight-bold" data-toggle="tab" href="#nav-my-projects" role="tab" aria-selected="true">
+                Mes projets
+                <span className="badge badge-secondary ml-2">
+                  {myProjectsIdList.length}
+                </span>
+              </a>
+              <a className="nav-item nav-link d-block w-50 text-center font-weight-bold" data-toggle="tab" href="#nav-other-projects" role="tab" aria-selected="false">
+                En collaboration
+                <span className="badge badge-secondary ml-2">
+                  {otherProjectsIdList.length}
+                </span>
+              </a>
             </div>
-        );
-    }
+          </nav>
+
+          <div className="tab-content">
+            <div className="tab-pane fade show active" id="nav-my-projects" role="tabpanel">
+              <ProjectsList projectsIdList={myProjectsIdList}/>
+            </div>
+            <div className="tab-pane fade" id="nav-other-projects" role="tabpanel">
+              <ProjectsList projectsIdList={otherProjectsIdList}/>
+            </div>
+          </div>
+        </div>) || <div className="spinner-border" role="status">
+            <span className="sr-only">Loading...</span>
+          </div>
+      }
+    </div>);
+  }
 }
 
 export default DashBoard;

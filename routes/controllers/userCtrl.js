@@ -130,12 +130,10 @@ async function me(req, res) {
                 projectsIdList: [],
             };
             let projectResult = await db.query(
-                'SELECT id_project FROM Own WHERE id_user=$1',
+                'SELECT id_project, creator FROM Own WHERE id_user=$1',
                 [userId]
             );
-            infos.projectsIdList = projectResult.rows.map(
-                elm => elm.id_project
-            );
+            infos.projectsIdList = projectResult.rows;
             res.status(200).json({
                 status: 'OK',
                 infos,
