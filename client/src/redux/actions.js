@@ -3,7 +3,7 @@ export const CONFIG_PROJECT_PAGE = 'CONFIG_PROJECT_PAGE';
 export const EXIT_PROJECT_PAGE = 'EXIT_PROJECT_PAGE';
 
 export const ADD_TASK = 'ADD_TASK';
-export const EDIT_TASK = 'CONFIG_TASK';
+export const EDIT_TASK = 'EDIT_TASK';
 export const REMOVE_TASK = 'REMOVE_TASK';
 
 export const CONFIG_EDIT_MODAL = 'CONFIG_EDIT_MODAL';
