@@ -49,14 +49,14 @@ class TasksList extends Component {
         : 0);
     };
 
-    const tab = (text, state, active) => (<a className={(() => {
+    const NavTab = ({text, state, active}) => (<a className={(() => {
         return ("nav-item nav-link" + (
           active
           ? ' active'
           : ''));
       })()} data-toggle="tab" href={`#nav-state-${state}`} role="tab" aria-selected="true" onDragOver={(e) => e.preventDefault()} onDrop={e => this.onDrop(e, state)}>
       {text}
-      <span className="badge badge-primary">
+      <span className="badge badge-primary ml-2">
         {this.props.list.reduce(nbTaskReducer(state), 0)}
       </span>
     </a>);
@@ -64,10 +64,10 @@ class TasksList extends Component {
     return (<div id="tasks-list" className="col-12">
       <nav>
         <div className="nav nav-tabs" role="tablist">
-          {tab('Idée', 1, true)}
-          {tab('A faire', 2)}
-          {tab('En cours', 3)}
-          {tab('Fini', 4)}
+          <NavTab text='Idée' state={1} active={true}/>
+          <NavTab text='A faire' state={2} active={false}/>
+          <NavTab text='En cours' state={3} active={false}/>
+          <NavTab text='Fini' state={4} active={false}/>
         </div>
       </nav>
       <div className="tab-content">
