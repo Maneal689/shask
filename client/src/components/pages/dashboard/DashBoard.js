@@ -56,7 +56,6 @@ class DashBoard extends Component {
           }}>
         +
       </button>
-      <h3>Projets</h3>
       {
         (this.state.projectsIdList && <div>
           <nav>

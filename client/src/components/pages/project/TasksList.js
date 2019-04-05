@@ -1,13 +1,16 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import $ from 'jquery';
 import 'bootstrap';
 
 import Task from './Task';
+import {editTask} from '../../../redux/actions';
 
 class TasksList extends Component {
   constructor(props) {
     super(props);
     this.getTasksOfState = this.getTasksOfState.bind(this);
+    this.onDrop = this.onDrop.bind(this);
   }
 
   getTasksOfState(state) {
@@ -18,6 +21,26 @@ class TasksList extends Component {
     return res;
   }
 
+  onDrop(e, newState) {
+    e.preventDefault();
+    let taskInfo = JSON.parse(e.dataTransfer.getData("json"));
+    taskInfo.state = newState;
+    fetch('/api/task/config', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(taskInfo)
+    }).then(res => res.json()).then(data => {
+      if (data.status === 'OK') {
+        this.props.editTask(taskInfo);
+        $('#' + this.props.id).modal('hide');
+      } else
+        console.error(data);
+      }
+    );
+  }
+
   render() {
     let nbTaskReducer = state => {
       return(acc, task) => acc + (
@@ -25,40 +48,33 @@ class TasksList extends Component {
         ? 1
         : 0);
     };
+
+    const tab = (text, state, active) => (<a className={(() => {
+        return ("nav-item nav-link" + (
+          active
+          ? ' active'
+          : ''));
+      })()} data-toggle="tab" href={`#nav-state-${state}`} role="tab" aria-selected="true" onDragOver={(e) => e.preventDefault()} onDrop={e => this.onDrop(e, state)}>
+      {text}
+      <span className="badge badge-primary">
+        {this.props.list.reduce(nbTaskReducer(state), 0)}
+      </span>
+    </a>);
+
     return (<div id="tasks-list" className="col-12">
       <nav>
         <div className="nav nav-tabs" role="tablist">
-          <a className="nav-item nav-link" data-toggle="tab" href="#nav-state-1" role="tab" aria-selected="true">
-            Idée{' '}
-            <span className="badge badge-primary">
-              {this.props.list.reduce(nbTaskReducer(1), 0)}
-            </span>
-          </a>
-          <a className="nav-item nav-link active" data-toggle="tab" href="#nav-state-2" role="tab" aria-selected="false">
-            A faire{' '}
-            <span className="badge badge-primary">
-              {this.props.list.reduce(nbTaskReducer(2), 0)}
-            </span>
-          </a>
-          <a className="nav-item nav-link" data-toggle="tab" href="#nav-state-3" role="tab" aria-selected="false">
-            En cours{' '}
-            <span className="badge badge-primary">
-              {this.props.list.reduce(nbTaskReducer(3), 0)}
-            </span>
-          </a>
-          <a className="nav-item nav-link" data-toggle="tab" href="#nav-state-4" role="tab" aria-selected="false">
-            Terminé{' '}
-            <span className="badge badge-primary">
-              {this.props.list.reduce(nbTaskReducer(4), 0)}
-            </span>
-          </a>
+          {tab('Idée', 1, true)}
+          {tab('A faire', 2)}
+          {tab('En cours', 3)}
+          {tab('Fini', 4)}
         </div>
       </nav>
       <div className="tab-content">
-        <div className="tab-pane fade" id="nav-state-1" role="tabpanel">
+        <div className="tab-pane fade show active" id="nav-state-1" role="tabpanel">
           <div className="row">{this.getTasksOfState(1)}</div>
         </div>
-        <div className="tab-pane fade show active" id="nav-state-2" role="tabpanel">
+        <div className="tab-pane fade" id="nav-state-2" role="tabpanel">
           <div className="row">{this.getTasksOfState(2)}</div>
         </div>
         <div className="tab-pane fade" id="nav-state-3" role="tabpanel">
@@ -72,4 +88,13 @@ class TasksList extends Component {
   }
 }
 
-export default TasksList;
+function mapStateToProps(state) {
+  return null;
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    editTask: taskInfo => dispatch(editTask(taskInfo))
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TasksList);

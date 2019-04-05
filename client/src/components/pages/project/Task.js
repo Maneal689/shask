@@ -9,10 +9,15 @@ class Task extends Component {
   constructor(props) {
     super(props);
     this.state = {};
+    this.onDrag = this.onDrag.bind(this);
+  }
+
+  onDrag(e) {
+    e.dataTransfer.setData("json", JSON.stringify(this.props.taskInfo));
   }
 
   render() {
-    return (<div className="col-12 col-sm-6 col-lg-4 col-xl-3 p-3" style={{
+    return (<div className="col-12 col-sm-6 col-lg-4 col-xl-3 p-3" draggable="true" onDragStart={this.onDrag} style={{
         backgroundColor: this.props.taskInfo.color
       }}>
       <div className="border border-info rounded pl-3 pr-3 pt-2 pb-1" style={{
@@ -22,14 +27,10 @@ class Task extends Component {
         <div className="d-flex justify-content-between">
           <strong>{this.props.taskInfo.title}</strong>
           <div className="btn-group">
-            <button
-              data-toggle="modal"
-              data-target="#editTaskModal"
-              className="btn btn-sm btn-light"
-              onClick={() => {
+            <button data-toggle="modal" data-target="#editTaskModal" className="btn btn-sm btn-light" onClick={() => {
                 this.props.configEditModal(this.props.taskInfo);
               }}>
-              <i className="fas fa-cog" />
+              <i className="fas fa-cog"/>
             </button>
             <button className="btn btn-sm btn-danger" onClick={() => {
                 let res = window.confirm('Supprimer la tâche?');

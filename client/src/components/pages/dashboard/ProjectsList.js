@@ -15,7 +15,7 @@ class Project extends Component {
         ? 1
         : 0), 0);
       let percent = (nbTasksChecked / nbTasks) * 100;
-      return (<a className="list-group-item list-group-item-action" href={(() => '/project/' + data.id_project)()}>
+      return (<a className="list-group-item list-group-item-action bg-light" href={(() => '/project/' + data.id_project)()}>
         <div className="d-flex flex-column">
           <div className="d-flex justify-content-between">
             <h4>{data.title}</h4>
