@@ -94,7 +94,7 @@ class ProjectPage extends Component {
       ? 1
       : 0), 0);
     let percent = (nbTasksChecked / nbTasks) * 100;
-    return (<div className="pt-5">
+    return (<div className="pt-5 text-dark">
       <NavigationBar/>
       <AddTaskModal id="addTaskModal" projectId={this.state.projectId} username={this.state.username}/>
       <EditTaskModal id="editTaskModal"/>
@@ -107,7 +107,7 @@ class ProjectPage extends Component {
         +
       </button>
       <div className="row justify-content-center align-items-center">
-        <h1 className="display-4">{this.state.title}</h1>
+        <h1 className="display-4 text-dark">{this.state.title}</h1>
         {
           this.state.creator === 1 && <button className="ml-3 btn btn-sm rounded-circle btn-light" onClick={this.editProjectName}>
               <i className="fas fa-cog"/>
@@ -115,7 +115,7 @@ class ProjectPage extends Component {
         }
       </div>
       <div id="progress-div text-center" className="col-12 mb-4">
-        <h2>
+        <h2 className="text-dark">
           Progrès: {nbTasksChecked}/{nbTasks}
         </h2>
         <div class="progress" style={{

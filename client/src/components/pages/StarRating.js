@@ -45,7 +45,7 @@ class StarRating extends Component {
                         }
                     />
                 );
-        return <div title={this.props.title}>{starList}</div>;
+        return <div title={this.props.title} className="text-dark">{starList}</div>;
     }
 }
 

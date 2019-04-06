@@ -17,9 +17,9 @@ class TasksList extends Component {
   getTasksOfState(state) {
     let res = [];
     let list = this.props.list.sort((a, b) => b.priority - a.priority);
-    for (let task of list.filter(task => task.state === state))
-      res.push(<Task taskInfo={task} />);
-    return res;
+    return list
+      .filter(task => task.state === state)
+      .map(task => <Task taskInfo={task} />);
   }
 
   onDrop(e, newState) {
@@ -52,7 +52,9 @@ class TasksList extends Component {
     };
 
     const NavTab = ({ text, state, active }) => {
-      let className = "nav-item nav-link" + (active ? " active" : "");
+      let className =
+        "nav-item nav-link bg-light text-dark font-weight-bold" +
+        (active ? " active" : "");
       return (
         <a
           className={className}

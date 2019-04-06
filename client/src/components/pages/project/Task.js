@@ -25,7 +25,7 @@ class Task extends Component {
           overflowY: 'scroll'
         }}>
         <div className="d-flex justify-content-between">
-          <strong>{this.props.taskInfo.title}</strong>
+          <strong className="">{this.props.taskInfo.title}</strong>
           <div className="btn-group">
             <button data-toggle="modal" data-target="#editTaskModal" className="btn btn-sm btn-light" onClick={() => {
                 this.props.configEditModal(this.props.taskInfo);

@@ -109,7 +109,7 @@ class CollaratorsList extends Component {
         let usersDiv = this.getUsersDiv();
         return (
             <div id="collaborators-div" className="col-12 mb-4">
-                <h2>Collaborateurs:</h2>
+                <h2 className="">Collaborateurs:</h2>
                 {this.props.creator === 1 && (
                     <div className="row">
                         <div className="col-lg-3 col-md-5 col-12">

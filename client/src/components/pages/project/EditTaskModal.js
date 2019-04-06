@@ -32,9 +32,9 @@ class EditTaskModal extends Component {
   }
 
   render() {
-    return (<div className="modal fade text-dark" id={this.props.id} role="dialog" aria-hidden="true">
+    return (<div className="modal fade" id={this.props.id} role="dialog" aria-hidden="true">
       <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content bg-light text-dark">
           <div class="modal-header">
             <h5 class="modal-title">Editer une tâche</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
