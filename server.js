@@ -2,8 +2,8 @@ const express = require('express');
 const apiRouter = require('./routes/api.js');
 const bodyParser = require('body-parser');
 const session = require('cookie-session');
-var cookieSecret = require('./config.js').cookieSecret;
-if (!cookieSecret) cookieSecret = process.env.COOKIE_SECRET;
+var cookieSecret = process.env.COOKIE_SECRET;
+if (!cookieSecret) cookieSecret = require('./config.js').cookieSecret;
 
 const port = process.env.PORT || 8000;
 
