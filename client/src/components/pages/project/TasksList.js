@@ -9,6 +9,7 @@ import { configAddModal, editTask } from "../../../redux/actions";
 class TasksList extends Component {
   constructor(props) {
     super(props);
+    this.activeTab = 1;
     this.getTasksOfState = this.getTasksOfState.bind(this);
     this.onDrop = this.onDrop.bind(this);
   }
@@ -60,6 +61,7 @@ class TasksList extends Component {
           href={`#nav-state-${state}`}
           aria-selected="true"
           onClick={() => {
+            this.activeTab = state;
             this.props.configAddModal({ state });
           }}
           onDragOver={e => e.preventDefault()}
@@ -86,17 +88,17 @@ class TasksList extends Component {
       <div id="tasks-list" className="col-12">
         <nav>
           <div className="nav nav-tabs" role="tablist">
-            <NavTab text="Idée" state={1} active={true} />
-            <NavTab text="A faire" state={2} />
-            <NavTab text="En cours" state={3} />
-            <NavTab text="Fini" state={4} />
+            <NavTab text="Idée" state={1} active={this.activeTab === 1} />
+            <NavTab text="A faire" state={2} active={this.activeTab === 2} />
+            <NavTab text="En cours" state={3} active={this.activeTab === 3} />
+            <NavTab text="Fini" state={4} active={this.activeTab === 4} />
           </div>
         </nav>
         <div className="tab-content">
-          <Pane state={1} active={true} />
-          <Pane state={2} />
-          <Pane state={3} />
-          <Pane state={4} />
+          <Pane state={1} active={this.activeTab === 1} />
+          <Pane state={2} active={this.activeTab === 2} />
+          <Pane state={3} active={this.activeTab === 3} />
+          <Pane state={4} active={this.activeTab === 4} />
         </div>
       </div>
     );
