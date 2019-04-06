@@ -1,5 +1,8 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
 import $ from "jquery";
+
+import { toggleNightMode } from "../../redux/actions";
 
 class NavigationBar extends Component {
   constructor(props) {
@@ -19,24 +22,7 @@ class NavigationBar extends Component {
 
   toggleNightMode(e) {
     let checked = e.target.checked;
-    let bgToToggle = undefined;
-    let textToToggle = undefined;
-    let btnToToggle = undefined;
-    if (checked) {
-      bgToToggle = $(".bg-light");
-      textToToggle = $(".text-dark");
-      btnToToggle = $(".btn-light");
-    } else {
-      bgToToggle = $(".bg-dark");
-      textToToggle = $(".text-light");
-      btnToToggle = $(".btn-dark");
-    }
-    bgToToggle.toggleClass("bg-light");
-    bgToToggle.toggleClass("bg-dark");
-    textToToggle.toggleClass("text-light");
-    textToToggle.toggleClass("text-dark");
-    btnToToggle.toggleClass("btn-light");
-    btnToToggle.toggleClass("btn-dark");
+    this.props.toggleNightMode(checked);
   }
 
   render() {
@@ -48,6 +34,7 @@ class NavigationBar extends Component {
             type="checkbox"
             class="custom-control-input"
             id={id}
+            checked={this.props.nightMode}
             onChange={f}
           />
           <label class="custom-control-label text-dark" htmlFor={id}>
@@ -76,4 +63,18 @@ class NavigationBar extends Component {
   }
 }
 
-export default NavigationBar;
+function mapStateToProps(state) {
+  return {
+    nightMode: state.nightMode,
+  };
+}
+function mapDispatchToProps(dispatch) {
+  return {
+    toggleNightMode: val => dispatch(toggleNightMode(val)),
+  };
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(NavigationBar);

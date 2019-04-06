@@ -41,7 +41,7 @@ class AddTaskModal extends Component {
     render() {
         return (
             <div
-                className="modal fade text-dark"
+                className="modal fade"
                 id={this.props.id}
                 role="dialog"
                 aria-hidden="true"

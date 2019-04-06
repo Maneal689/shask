@@ -1,7 +1,6 @@
+import { combineReducers } from "redux";
 import {
-  combineReducers
-} from 'redux';
-import {
+  TOGGLE_NIGHT_MODE,
   EXIT_PROJECT_PAGE,
   CONFIG_PROJECT_PAGE,
   ADD_TASK,
@@ -11,7 +10,7 @@ import {
   REMOVE_COLLABORATOR,
   CONFIG_EDIT_MODAL,
   CONFIG_ADD_MODAL,
-} from './actions';
+} from "./actions";
 
 let initialState = {
   tasksList: [],
@@ -58,8 +57,8 @@ function colReducer(state = [], action) {
 }
 
 let defaultModal = {
-  title: '',
-  description: '',
+  title: "",
+  description: "",
   priority: 0,
   difficulty: 0,
   state: 1,
@@ -87,11 +86,23 @@ function addModalReducer(state = defaultModal, action) {
   }
 }
 
+function nightModeReducer(state = false, action) {
+  switch (action.type) {
+    case TOGGLE_NIGHT_MODE:
+      if (!action.val)
+        return !state;
+      return (action.val);
+    default:
+      return state;
+  }
+}
+
 const app = combineReducers({
   tasksList: taskReducer,
   collaboratorsList: colReducer,
   editModalConfig: editModalReducer,
   addModalConfig: addModalReducer,
+  nightMode: nightModeReducer,
 });
 
 export default app;

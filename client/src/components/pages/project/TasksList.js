@@ -53,8 +53,9 @@ class TasksList extends Component {
 
     const NavTab = ({ text, state, active }) => {
       let className =
-        "nav-item nav-link bg-light text-dark font-weight-bold" +
-        (active ? " active" : "");
+        "nav-item nav-link font-weight-bold" +
+        (active ? " active" : "") +
+        (this.props.nightMode ? " bg-dark text-light" : " bg-light text-dark");
       return (
         <a
           className={className}
@@ -108,7 +109,7 @@ class TasksList extends Component {
 }
 
 function mapStateToProps(state) {
-  return null;
+  return { nightMode: state.nightMode };
 }
 function mapDispatchToProps(dispatch) {
   return {
