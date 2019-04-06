@@ -3,7 +3,7 @@ const apiRouter = require('./routes/api.js');
 const bodyParser = require('body-parser');
 const session = require('cookie-session');
 var cookieSecret = process.env.COOKIE_SECRET;
-if (!cookieSecret) cookieSecret = require('./config.js').cookieSecret;
+if (!cookieSecret) cookieSecret = require('./config').cookieSecret;
 
 const port = process.env.PORT || 8000;
 
