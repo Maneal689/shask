@@ -18,8 +18,8 @@ class Project extends Component {
       return (<a className="list-group-item list-group-item-action bg-light" href={(() => '/project/' + data.id_project)()}>
         <div className="d-flex flex-column">
           <div className="d-flex justify-content-between">
-            <h4>{data.title}</h4>
-            <span>
+            <h4 className="text-dark">{data.title}</h4>
+            <span className="text-dark">
               {nbTasksChecked}/{nbTasks}
             </span>
           </div>

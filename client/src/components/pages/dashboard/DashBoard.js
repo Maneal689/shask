@@ -60,13 +60,13 @@ class DashBoard extends Component {
         (this.state.projectsIdList && <div>
           <nav>
             <div className="nav nav-tabs" role="tablist">
-              <a className="nav-item nav-link active d-block w-50 text-center font-weight-bold" data-toggle="tab" href="#nav-my-projects" role="tab" aria-selected="true">
+              <a className="nav-item nav-link active d-block w-50 text-center font-weight-bold bg-light text-dark" data-toggle="tab" href="#nav-my-projects" role="tab" aria-selected="true">
                 Mes projets
                 <span className="badge badge-secondary ml-2">
                   {myProjectsIdList.length}
                 </span>
               </a>
-              <a className="nav-item nav-link d-block w-50 text-center font-weight-bold" data-toggle="tab" href="#nav-other-projects" role="tab" aria-selected="false">
+              <a className="nav-item nav-link d-block w-50 text-center font-weight-bold bg-light text-dark" data-toggle="tab" href="#nav-other-projects" role="tab" aria-selected="false">
                 En collaboration
                 <span className="badge badge-secondary ml-2">
                   {otherProjectsIdList.length}
