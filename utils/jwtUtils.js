@@ -1,5 +1,7 @@
 const jwt = require('jsonwebtoken');
-const jwtSecret = require('../config').jwtSecret;
+var jwtSecret = require('../config').jwtSecret;
+if (!jwtSecret)
+  jwtSecret = process.env.JWT_SECRET;
 
 function parseToken(auth) {
     //Verify that access key is defined
