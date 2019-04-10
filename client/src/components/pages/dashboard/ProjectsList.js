@@ -10,7 +10,7 @@ class ProjectsList extends Component {
 
   projectCard(data) {
     if (data) {
-      let nbTasks = this.props.tasksList.reduce(
+      let nbTasks = data.tasksList.reduce(
         (acc, task) => acc + (task.state > 1 ? 1 : 0),
         0
       );
@@ -18,7 +18,7 @@ class ProjectsList extends Component {
         (acc, elm) => acc + (elm.state === 4 ? 1 : 0),
         0
       );
-      let percent = (nbTasksChecked / nbTasks) * 100;
+      let percent = nbTasks > 0 ? (nbTasksChecked / nbTasks) * 100 : 0;
       return (
         <a
           className={(() =>

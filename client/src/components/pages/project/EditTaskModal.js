@@ -18,7 +18,7 @@ class EditTaskModal extends Component {
     fetch("/api/task/config", {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(taskInfo),
     })
@@ -28,7 +28,7 @@ class EditTaskModal extends Component {
           this.props.editTask(taskInfo);
           $("#" + this.props.id).modal("hide");
         } else console.error(data);
-    });
+      });
   }
 
   render() {
@@ -58,30 +58,35 @@ class EditTaskModal extends Component {
                   placeholder="Titre"
                   type="text"
                   className={(() => {
-                return ("form-control form-control-lg form-group" + (
-                  this.state.titleError
-                    ? " is-invalid"
+                    return (
+                      "form-control form-control-lg form-group" +
+                      (this.state.titleError ? " is-invalid" : "")
+                    );
                   })()}
-              })()} value={this.props.config.title} onChange={e => {
+                  value={this.props.config.title}
+                  onChange={e => {
                     let title = e.target.value;
-                this.props.configEditModal({title});
-              }}/>
+                    this.props.configEditModal({ title });
+                  }}
+                />
                 <textarea
                   className="form-control form-control-lg form-group"
                   placeholder="Description"
                   value={this.props.config.description}
                   onChange={e => {
                     let description = e.target.value;
-                this.props.configEditModal({description});
-              }}/>
+                    this.props.configEditModal({ description });
+                  }}
+                />
                 <div className="form-group">
                   <label htmlFor="stateInputEditModal">Etat:</label>
                   <select
                     className="form-control form-control-lg"
                     onChange={e => {
                       let state = parseInt(e.target.value);
-                  this.props.configEditModal({state});
-                }}>
+                      this.props.configEditModal({ state });
+                    }}
+                  >
                     <option value="1" selected={this.props.config.state === 1}>
                       Idée
                     </option>
@@ -104,8 +109,9 @@ class EditTaskModal extends Component {
                     color="#17A2B8"
                     editable={true}
                     fallback={val => {
-                  this.props.configEditModal({priority: val});
-                }}/>
+                      this.props.configEditModal({ priority: val });
+                    }}
+                  />
                 </div>
                 <div className="d-flex justify-content-between">
                   <span>Difficulté:</span>
@@ -115,8 +121,9 @@ class EditTaskModal extends Component {
                     color="#FF770F"
                     editable={true}
                     fallback={val => {
-                  this.props.configEditModal({difficulty: val});
-                }}/>
+                      this.props.configEditModal({ difficulty: val });
+                    }}
+                  />
                 </div>
               </form>
             </div>
@@ -133,18 +140,16 @@ class EditTaskModal extends Component {
                 class="btn btn-primary"
                 onClick={() => {
                   let taskInfo = {
-                id_task: this.props.config.id_task
+                    id_task: this.props.config.id_task,
                   };
                   taskInfo.priority = this.props.config.priority;
                   taskInfo.difficulty = this.props.config.difficulty;
                   taskInfo.description = this.props.config.description.trim();
-              taskInfo.title = this.props.config.title.trim();
+                  taskInfo.title = this.props.config.title.trim();
                   taskInfo.state = this.props.config.state;
-              if (taskInfo.title.length > 1)
-                this.editTask(taskInfo);
-              else
-                this.setState({titleError: true});
-            }}
+                  if (taskInfo.title.length > 1) this.editTask(taskInfo);
+                  else this.setState({ titleError: true });
+                }}
               >
                 Valider
               </button>
