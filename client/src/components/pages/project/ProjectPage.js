@@ -100,7 +100,10 @@ class ProjectPage extends Component {
       );
     }
 
-    let nbTasks = this.props.tasksList.length;
+    let nbTasks = this.props.tasksList.reduce(
+      (acc, task) => acc + (task.state > 1 ? 1 : 0),
+      0
+    );
     let nbTasksChecked = this.props.tasksList.reduce(
       (acc, task) => acc + (task.state === 4 ? 1 : 0),
       0

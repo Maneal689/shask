@@ -10,7 +10,10 @@ class ProjectsList extends Component {
 
   projectCard(data) {
     if (data) {
-      let nbTasks = data.tasksList.length;
+      let nbTasks = this.props.tasksList.reduce(
+        (acc, task) => acc + (task.state > 1 ? 1 : 0),
+        0
+      );
       let nbTasksChecked = data.tasksList.reduce(
         (acc, elm) => acc + (elm.state === 4 ? 1 : 0),
         0
