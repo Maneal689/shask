@@ -1,9 +1,19 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 
-const taskCtrl = require('./controllers/taskCtrl');
+const taskCtrl = require("./controllers/taskCtrl");
 
-router.get('/:id/remove', taskCtrl.remove);
-router.post('/config', taskCtrl.config);
+function voteLess(req, res) {
+  taskCtrl.vote(req, res, -1);
+}
+
+function votePlus(req, res) {
+  taskCtrl.vote(req, res, 1);
+}
+
+router.get("/:id/remove", taskCtrl.remove);
+router.get("/:id/votePlus", votePlus);
+router.get("/:id/voteLess", voteLess);
+router.post("/config", taskCtrl.config);
 
 module.exports = router;

@@ -170,7 +170,7 @@ class ProjectPage extends Component {
           myId={this.state.myId}
           projectId={this.state.projectId}
         />
-        <TasksList list={this.props.tasksList} />{" "}
+        <TasksList list={this.props.tasksList} myId={this.state.myId} />{" "}
         {(this.state.creator === 1 && (
           <div className="row justify-content-center">
             <button

@@ -55,29 +55,33 @@ class ProjectsList extends Component {
   }
 
   componentDidMount() {
-    for (let id of this.props.projectsIdList) {
-      fetch("/api/project/" + id + "/allInfos", { method: "GET" })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === "OK") {
-            let projectsList = undefined;
-            if (!this.state.projectsList) projectsList = [data.infos];
-            else
-              projectsList = [...this.state.projectsList, data.infos].sort(
-                (a, b) => (a.title < b.title ? -1 : 1)
-              );
-            this.setState({ projectsList });
-          }
-        });
-    }
+    if (this.props.projectsIdList.length > 0) {
+      for (let id of this.props.projectsIdList) {
+        fetch("/api/project/" + id + "/allInfos", { method: "GET" })
+          .then(res => res.json())
+          .then(data => {
+            if (data.status === "OK") {
+              let projectsList = undefined;
+              if (!this.state.projectsList) projectsList = [data.infos];
+              else
+                projectsList = [...this.state.projectsList, data.infos].sort(
+                  (a, b) => (a.title < b.title ? -1 : 1)
+                );
+              this.setState({ projectsList });
+            }
+          });
+      }
+    } else this.setState({ projectsList: [] });
   }
 
   render() {
     let projectsTabList = undefined;
-    if (this.state.projectsList)
+    if (this.state.projectsList) {
       projectsTabList = this.state.projectsList.map(project =>
         this.projectCard(project)
       );
+      //if (!projectsTabList) projectsTabList = <div />;
+    }
     return (
       <div className="mb-3 border-0 text-center">
         <div className="list-group list-group-flush">

@@ -19,7 +19,7 @@ class TasksList extends Component {
     let list = this.props.list.sort((a, b) => b.priority - a.priority);
     return list
       .filter(task => task.state === state)
-      .map(task => <Task taskInfo={task} />);
+      .map(task => <Task taskInfo={task} myId={this.props.myId} />);
   }
 
   onDrop(e, newState) {
