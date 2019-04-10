@@ -1,12 +1,12 @@
-const jwt = require('jsonwebtoken');
+const jwt = require("jsonwebtoken");
 var jwtSecret = process.env.JWT_SECRET;
-if (!jwtSecret) jwtSecret = require('../config').jwtSecret;
+if (!jwtSecret) jwtSecret = require("../config").jwtSecret;
 
 function parseToken(auth) {
   //Verify that access key is defined
   if (auth) {
     //Take only the jwt token without 'Bearer '
-    let jwtToken = auth.split(' ')[1];
+    let jwtToken = auth.split(" ")[1];
     //Verify token with secret key
     try {
       let tokenObj = jwt.verify(jwtToken, jwtSecret);
@@ -20,7 +20,7 @@ function parseToken(auth) {
 }
 
 function createUserToken(userData) {
-  return 'Bearer ' + jwt.sign({ userId: userData.id_user }, jwtSecret);
+  return "Bearer " + jwt.sign({ userId: userData.id_user }, jwtSecret);
 }
 
 function getUserId(req) {

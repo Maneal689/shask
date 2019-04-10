@@ -1,18 +1,20 @@
-const express = require('express');
-const apiRouter = require('./routes/api.js');
-const bodyParser = require('body-parser');
-const session = require('cookie-session');
+const express = require("express");
+const apiRouter = require("./routes/api.js");
+const bodyParser = require("body-parser");
+const session = require("cookie-session");
 var cookieSecret = process.env.COOKIE_SECRET;
-if (!cookieSecret) cookieSecret = require('./config').cookieSecret;
+if (!cookieSecret) cookieSecret = require("./config").cookieSecret;
 
 const port = process.env.PORT || 8000;
 
 let app = express();
 
+testLint = 2;
+
 app.use(
   session({
     secret: cookieSecret,
-    name: 'session',
+    name: "session",
     httpOnly: true,
     maxAge: 1000 * 60 * 60,
   })
@@ -20,7 +22,7 @@ app.use(
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
-app.use(express.static(__dirname + '/client/dist'));
+app.use(express.static(__dirname + "/client/dist"));
 
 //MiddleWare
 app.use((req, res, next) => {
@@ -28,10 +30,10 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use('/api', apiRouter);
+app.use("/api", apiRouter);
 
-app.get('*', (req, res) => {
-  res.sendFile(__dirname + '/client/dist/index.html');
+app.get("*", (req, res) => {
+  res.sendFile(__dirname + "/client/dist/index.html");
 });
 
-app.listen(port, () => console.log('Listening on port: ', port));
+app.listen(port, () => console.log("Listening on port: ", port));
