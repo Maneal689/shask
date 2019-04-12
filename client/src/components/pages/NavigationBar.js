@@ -20,9 +20,13 @@ class NavigationBar extends Component {
       });
   }
 
+  componentDidMount() {
+    this.props.toggleNightMode(window.sessionStorage.nightMode === "true");
+  }
+
   toggleNightMode(e) {
-    let checked = e.target.checked;
-    this.props.toggleNightMode(checked);
+    window.sessionStorage.nightMode = e.target.checked;
+    this.props.toggleNightMode(e.target.checked);
   }
 
   render() {
@@ -34,7 +38,7 @@ class NavigationBar extends Component {
             type="checkbox"
             class="custom-control-input"
             id={id}
-            checked={this.props.nightMode}
+            defaultChecked={this.props.nightMode}
             onChange={f}
           />
           <label class="custom-control-label text-dark" htmlFor={id}>

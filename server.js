@@ -16,7 +16,6 @@ app.use(
     secret: cookieSecret,
     name: "session",
     httpOnly: true,
-    maxAge: 1000 * 60 * 60,
   })
 );
 

@@ -1,5 +1,4 @@
 export const TOGGLE_NIGHT_MODE = "TOGGLE_NIGHT_MODE";
-
 //---------- Project page ----------//
 export const CONFIG_PROJECT_PAGE = "CONFIG_PROJECT_PAGE";
 export const EXIT_PROJECT_PAGE = "EXIT_PROJECT_PAGE";

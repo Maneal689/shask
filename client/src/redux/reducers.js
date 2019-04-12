@@ -89,9 +89,8 @@ function addModalReducer(state = defaultModal, action) {
 function nightModeReducer(state = false, action) {
   switch (action.type) {
     case TOGGLE_NIGHT_MODE:
-      if (!action.val)
-        return !state;
-      return (action.val);
+      if (action.val == undefined) return !state;
+      return action.val;
     default:
       return state;
   }

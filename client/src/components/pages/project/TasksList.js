@@ -109,7 +109,9 @@ class TasksList extends Component {
 }
 
 function mapStateToProps(state) {
-  return { nightMode: state.nightMode };
+  return {
+    nightMode: state.nightMode,
+  };
 }
 function mapDispatchToProps(dispatch) {
   return {
