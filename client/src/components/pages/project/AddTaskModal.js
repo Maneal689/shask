@@ -160,6 +160,9 @@ class AddTaskModal extends Component {
                   taskInfo.priority = this.props.config.priority;
                   taskInfo.difficulty = this.props.config.difficulty;
                   taskInfo.description = this.props.config.description.trim();
+                  taskInfo.totalVote = 0;
+                  taskInfo.voteCount = 0;
+                  taskInfo.myVote = 0;
                   taskInfo.title = this.props.config.title.trim();
                   taskInfo.state = this.props.config.state;
                   if (taskInfo.title.length > 1) this.addTask(taskInfo);
