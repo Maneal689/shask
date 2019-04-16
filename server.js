@@ -9,14 +9,12 @@ const port = process.env.PORT || 8000;
 
 let app = express();
 
-testLint = 2;
-
 app.use(
-  session({
-    secret: cookieSecret,
-    name: "session",
-    httpOnly: true,
-  })
+    session({
+	secret: cookieSecret,
+	name: "session",
+	httpOnly: true,
+    })
 );
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -25,14 +23,14 @@ app.use(express.static(__dirname + "/client/dist"));
 
 //MiddleWare
 app.use((req, res, next) => {
-  console.log(`${req.method}: ${req.url}`);
-  next();
+    console.log(`${req.method}: ${req.url}`);
+    next();
 });
 
 app.use("/api", apiRouter);
 
 app.get("*", (req, res) => {
-  res.sendFile(__dirname + "/client/dist/index.html");
+    res.sendFile(__dirname + "/client/dist/index.html");
 });
 
 app.listen(port, () => console.log("Listening on port: ", port));
