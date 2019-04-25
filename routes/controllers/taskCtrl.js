@@ -74,13 +74,14 @@ async function vote(req, res, val) {
           "SELECT * FROM vote WHERE id_task=$1 AND id_user=$2",
           [taskId, userId]
         );
-        if (cVote.rowCount > 0 && cVote.rows[0].val !== val)
-          db.query("UPDATE vote SET val=$1 WHERE id_task=$2 AND id_user=$3", [
-            val,
-            taskId,
-            userId,
-          ]);
-        else
+        if (cVote.rowCount > 0) {
+          if (cVote.rows[0].val != val)
+            db.query("UPDATE vote SET val=$1 WHERE id_task=$2 AND id_user=$3", [
+              val,
+              taskId,
+              userId,
+            ]);
+        } else
           db.query(
             "INSERT INTO vote(id_task, id_user, val) VALUES($1, $2, $3)",
             [taskId, userId, val]
