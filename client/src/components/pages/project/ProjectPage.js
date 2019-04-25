@@ -38,7 +38,7 @@ class ProjectPage extends Component {
   }
 
   componentDidMount() {
-    fetch("/api/project/" + this.state.projectId + "/allInfos", {
+    fetch(`/api/project/${this.state.projectId}/allInfos`, {
       method: "GET",
     })
       .then(res => res.json())
@@ -56,7 +56,7 @@ class ProjectPage extends Component {
   }
 
   quitProject() {
-    fetch("/api/project/" + this.state.projectId + "/quit", { method: "GET" })
+    fetch(`/api/project/${this.state.projectId}/quit`, { method: "GET" })
       .then(res => res.json())
       .then(data => {
         if (data.status === "OK") document.location.href = "/dashboard";
@@ -64,7 +64,7 @@ class ProjectPage extends Component {
   }
 
   deleteProject() {
-    fetch("/api/project/" + this.state.projectId + "/delete", { method: "GET" })
+    fetch(`/api/project/${this.state.projectId}/delete`, { method: "GET" })
       .then(res => res.json())
       .then(data => {
         if (data.status === "OK") document.location.href = "/dashboard";
@@ -75,7 +75,7 @@ class ProjectPage extends Component {
     let newName = window.prompt("Nouveau nom:", this.state.title);
     if (newName && newName.length) {
       newName = newName.trim();
-      fetch("/api/project/" + this.state.projectId + "/rename", {
+      fetch(`/api/project/${this.state.projectId}/rename`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -128,8 +128,7 @@ class ProjectPage extends Component {
             right: "50px",
             bottom: "50px",
             zIndex: 1000,
-          }}
-        >
+          }}>
           +
         </button>
         <div className="row justify-content-center align-items-center">
@@ -137,8 +136,7 @@ class ProjectPage extends Component {
           {this.state.creator === 1 && (
             <button
               className="ml-3 btn btn-sm rounded-circle btn-light"
-              onClick={this.editProjectName}
-            >
+              onClick={this.editProjectName}>
               <i className="fas fa-cog" />
             </button>
           )}
@@ -151,8 +149,7 @@ class ProjectPage extends Component {
             class="progress"
             style={{
               height: "2em",
-            }}
-          >
+            }}>
             <div
               class="progress-bar bg-info"
               role="progressbar"
@@ -182,8 +179,7 @@ class ProjectPage extends Component {
                   }") pour valider la suppression:`
                 );
                 if (conf && conf === this.state.title) this.deleteProject();
-              }}
-            >
+              }}>
               Supprimer le projet
             </button>
           </div>
@@ -198,8 +194,7 @@ class ProjectPage extends Component {
                   }") pour valider:`
                 );
                 if (conf && conf === this.state.title) this.quitProject();
-              }}
-            >
+              }}>
               Quitter le projet
             </button>
           </div>

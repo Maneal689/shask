@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 
 class ProjectsList extends Component {
@@ -20,14 +21,11 @@ class ProjectsList extends Component {
       );
       let percent = nbTasks > 0 ? (nbTasksChecked / nbTasks) * 100 : 0;
       return (
-        <a
-          className={(() =>
-            "list-group-item list-group-item-action" +
-            (this.props.nightMode
-              ? " text-light bg-dark"
-              : " text-dark bg-light"))()}
-          href={(() => "/project/" + data.id_project)()}
-        >
+        <Link
+          className={`list-group-item list-group-item-action ${
+            this.props.nightMode ? "text-light bg-dark" : "text-dark bg-light"
+          }`}
+          to={`/project/${data.id_project}`}>
           <div className="d-flex flex-column">
             <div className="d-flex justify-content-between">
               <h4 className="">{data.title}</h4>
@@ -48,7 +46,7 @@ class ProjectsList extends Component {
               />
             </div>
           </div>
-        </a>
+        </Link>
       );
     }
     return <div />;
@@ -80,7 +78,6 @@ class ProjectsList extends Component {
       projectsTabList = this.state.projectsList.map(project =>
         this.projectCard(project)
       );
-      //if (!projectsTabList) projectsTabList = <div />;
     }
     return (
       <div className="mb-3 border-0 text-center">

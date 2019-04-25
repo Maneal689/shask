@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import { connect } from "react-redux";
 import $ from "jquery";
 
@@ -49,13 +50,12 @@ class NavigationBar extends Component {
     };
     return (
       <div className="fixed-top d-flex justify-content-between align-items-center bg-secondary p-2">
-        <button
+        <Link
           style={{ cursor: "pointer" }}
-          onClick={() => (document.location.href = "/dashboard")}
-          className="btn btn-sm btn-info"
-        >
+          to="/dashboard"
+          className="btn btn-sm btn-info">
           Dashboard
-        </button>
+        </Link>
         <div className="d-flex">
           <Switch labelText="Mode nuit" f={this.toggleNightMode} />
           <button onClick={this.logout} className="btn btn-light btn-sm">

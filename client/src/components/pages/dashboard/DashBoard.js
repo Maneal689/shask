@@ -63,8 +63,7 @@ class DashBoard extends Component {
             let projectTitle = window.prompt("Titre du projet:");
             if (projectTitle && projectTitle.length > 0)
               this.createProject(projectTitle);
-          }}
-        >
+          }}>
           +
         </button>
         {(this.state.projectsIdList && (
@@ -72,16 +71,15 @@ class DashBoard extends Component {
             <nav>
               <div className="nav nav-tabs" role="tablist">
                 <a
-                  className={(() =>
-                    "nav-item nav-link active d-block w-50 text-center font-weight-bold" +
-                    (this.props.nightMode
+                  className={`nav-item nav-link active d-block w-50 text-center font-weight-bold ${
+                    this.props.nightMode
                       ? " bg-dark text-light"
-                      : "bg-list text-dark"))()}
+                      : "bg-list text-dark"
+                  }`}
                   data-toggle="tab"
                   href="#nav-my-projects"
                   role="tab"
-                  aria-selected="true"
-                >
+                  aria-selected="true">
                   Mes projets
                   <span className="badge badge-secondary ml-2">
                     {myProjectsIdList.length}
@@ -96,8 +94,7 @@ class DashBoard extends Component {
                   data-toggle="tab"
                   href="#nav-other-projects"
                   role="tab"
-                  aria-selected="false"
-                >
+                  aria-selected="false">
                   En collaboration
                   <span className="badge badge-secondary ml-2">
                     {otherProjectsIdList.length}
@@ -110,15 +107,13 @@ class DashBoard extends Component {
               <div
                 className="tab-pane fade show active"
                 id="nav-my-projects"
-                role="tabpanel"
-              >
+                role="tabpanel">
                 <ProjectsList projectsIdList={myProjectsIdList} />
               </div>
               <div
                 className="tab-pane fade"
                 id="nav-other-projects"
-                role="tabpanel"
-              >
+                role="tabpanel">
                 <ProjectsList projectsIdList={otherProjectsIdList} />
               </div>
             </div>
