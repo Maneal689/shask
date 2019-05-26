@@ -17,6 +17,9 @@ class Task extends Component {
   }
 
   render() {
+    let spList = this.props.taskInfo.simpleTasks;
+    let percentProgress =
+      (spList.filter(sp => sp.state === 1).length / spList.length) * 100;
     return (
       <div
         className="col-12 col-sm-6 col-lg-4 col-xl-3 p-3"
@@ -24,8 +27,7 @@ class Task extends Component {
         onDragStart={this.onDrag}
         style={{
           backgroundColor: this.props.taskInfo.color,
-        }}
-      >
+        }}>
         <div className="border border-info rounded pl-3 pr-3 pt-2 pb-1">
           <div className="d-flex justify-content-between">
             <strong className="">{this.props.taskInfo.title}</strong>
@@ -36,8 +38,7 @@ class Task extends Component {
                 className="btn btn-sm btn-light"
                 onClick={() => {
                   this.props.configEditModal(this.props.taskInfo);
-                }}
-              >
+                }}>
                 <i className="fas fa-cog" />
               </button>
               <button
@@ -56,21 +57,36 @@ class Task extends Component {
                           this.props.removeTask(this.props.taskInfo.id_task);
                       });
                   }
-                }}
-              >
+                }}>
                 &times;
               </button>
+            </div>
+          </div>
+          <div className="w-100 text-center mt-1">
+            <div className="progress" style={{ height: "5px" }}>
+              <div
+                className="progress-bar bg-info"
+                role="progressbar"
+                aria-valuemax="100"
+                aria-valuemin="0"
+                aria-valuenow={percentProgress}
+                style={{ width: `${percentProgress}%` }}
+              />
             </div>
           </div>
           <hr className="m-2" />
           <div>
             <p
               className="mb-0"
+              data-toggle="modal"
+              data-target="#editTaskModal"
+              onClick={() => {
+                this.props.configEditModal(this.props.taskInfo);
+              }}
               style={{
                 height: "6em",
                 overflowY: "scroll",
-              }}
-            >
+              }}>
               {this.props.taskInfo.description}
             </p>
             <footer className="blockquote-footer">
@@ -129,8 +145,7 @@ class Task extends Component {
                           }
                         });
                     }
-                  }}
-                >
+                  }}>
                   -
                 </button>
                 <span
@@ -138,8 +153,7 @@ class Task extends Component {
                     this.props.taskInfo.voteCount > 0
                       ? "text-success pl-3 pr-3"
                       : "text-danger pl-3 pr-3"
-                  }
-                >
+                  }>
                   {this.props.taskInfo.voteCount}
                 </span>
                 <button
@@ -168,8 +182,7 @@ class Task extends Component {
                           }
                         });
                     }
-                  }}
-                >
+                  }}>
                   +
                 </button>
               </div>

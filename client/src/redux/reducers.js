@@ -62,6 +62,7 @@ let defaultModal = {
   priority: 0,
   difficulty: 0,
   state: 1,
+  simpleTasks: [],
 };
 
 function editModalReducer(state = defaultModal, action) {

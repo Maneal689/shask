@@ -1,0 +1,18 @@
+.simple-todo-task {
+  transition-duration: 0.5s;
+  position: relative;
+  padding: 0 5px;
+}
+
+.simple-todo-task:hover {
+  cursor: pointer;
+}
+
+.simple-task-del {
+  float: right;
+}
+
+.simple-task-del:hover {
+  cursor: pointer;
+  color: #888;
+}

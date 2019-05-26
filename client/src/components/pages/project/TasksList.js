@@ -68,8 +68,7 @@ class TasksList extends Component {
             this.props.configAddModal({ state });
           }}
           onDragOver={e => e.preventDefault()}
-          onDrop={e => this.onDrop(e, state)}
-        >
+          onDrop={e => this.onDrop(e, state)}>
           {text}
           <span className="badge badge-primary ml-2">
             {this.props.list.reduce(nbTaskReducer(state), 0)}
@@ -79,7 +78,7 @@ class TasksList extends Component {
     };
 
     const Pane = ({ state, active }) => {
-      let className = "tab-pane fade" + (active ? " active show" : "");
+      let className = "tab-pane" + (active ? " active show" : "");
       return (
         <div className={className} id={`nav-state-${state}`} role="tabpanel">
           <div className="row">{this.getTasksOfState(state)}</div>

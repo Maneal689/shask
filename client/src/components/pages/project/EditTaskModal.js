@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import $ from "jquery";
 
 import StarRating from "../StarRating";
+import SimpleTodoList from "./SimpleTodoList";
 import { configEditModal, editTask } from "../../../redux/actions";
 
 class EditTaskModal extends Component {
@@ -37,8 +38,7 @@ class EditTaskModal extends Component {
         className="modal fade"
         id={this.props.id}
         role="dialog"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content bg-light text-dark">
             <div class="modal-header">
@@ -47,8 +47,7 @@ class EditTaskModal extends Component {
                 type="button"
                 class="close"
                 data-dismiss="modal"
-                aria-label="Close"
-              >
+                aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -85,8 +84,7 @@ class EditTaskModal extends Component {
                     onChange={e => {
                       let state = parseInt(e.target.value);
                       this.props.configEditModal({ state });
-                    }}
-                  >
+                    }}>
                     <option value="1" selected={this.props.config.state === 1}>
                       Idée
                     </option>
@@ -125,32 +123,38 @@ class EditTaskModal extends Component {
                     }}
                   />
                 </div>
+                <hr />
+                <SimpleTodoList
+                  taskId={this.props.config.id_task}
+                  list={this.props.config.simpleTasks}
+                  fallback={this.props.configEditModal}
+                  editTask={this.props.editTask}
+                />
               </form>
             </div>
             <div class="modal-footer">
               <button
                 type="button"
                 class="btn btn-secondary"
-                data-dismiss="modal"
-              >
+                data-dismiss="modal">
                 Annuler
               </button>
               <button
                 type="button"
                 class="btn btn-primary"
                 onClick={() => {
+                  let state = this.props.config;
                   let taskInfo = {
                     id_task: this.props.config.id_task,
                   };
-                  taskInfo.priority = this.props.config.priority;
-                  taskInfo.difficulty = this.props.config.difficulty;
-                  taskInfo.description = this.props.config.description.trim();
-                  taskInfo.title = this.props.config.title.trim();
-                  taskInfo.state = this.props.config.state;
+                  taskInfo.priority = state.priority;
+                  taskInfo.difficulty = state.difficulty;
+                  taskInfo.description = state.description.trim();
+                  taskInfo.title = state.title.trim();
+                  taskInfo.state = state.state;
                   if (taskInfo.title.length > 1) this.editTask(taskInfo);
                   else this.setState({ titleError: true });
-                }}
-              >
+                }}>
                 Valider
               </button>
             </div>

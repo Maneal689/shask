@@ -49,6 +49,13 @@ async function allInfos(req, res) {
           [projectId]
         );
         for (let task of rows) {
+          //SIMPLE TASKS
+          let simpleTasks = await db.query(
+            "SELECT * FROM simple_tasks WHERE id_task = $1",
+            [task.id_task]
+          );
+          task.simpleTasks = simpleTasks.rows;
+          //VOTES COUNTING
           let voteCount = 0;
           let myVote = 0;
           let votes = await db.query(
