@@ -44,8 +44,7 @@ class AddTaskModal extends Component {
         className="modal fade"
         id={this.props.id}
         role="dialog"
-        aria-hidden="true"
-      >
+        aria-hidden="true">
         <div class="modal-dialog" role="document">
           <div class="modal-content bg-light text-dark">
             <div class="modal-header">
@@ -54,8 +53,7 @@ class AddTaskModal extends Component {
                 type="button"
                 class="close"
                 data-dismiss="modal"
-                aria-label="Close"
-              >
+                aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -96,8 +94,7 @@ class AddTaskModal extends Component {
                       this.props.configAddModal({
                         state,
                       });
-                    }}
-                  >
+                    }}>
                     <option value="1" selected={this.props.config.state === 1}>
                       Idée
                     </option>
@@ -146,8 +143,7 @@ class AddTaskModal extends Component {
               <button
                 type="button"
                 class="btn btn-secondary"
-                data-dismiss="modal"
-              >
+                data-dismiss="modal">
                 Annuler
               </button>
               <button
@@ -160,6 +156,7 @@ class AddTaskModal extends Component {
                   taskInfo.priority = this.props.config.priority;
                   taskInfo.difficulty = this.props.config.difficulty;
                   taskInfo.description = this.props.config.description.trim();
+                  taskInfo.simpleTasks = [];
                   taskInfo.totalVote = 0;
                   taskInfo.voteCount = 0;
                   taskInfo.myVote = 0;
@@ -167,8 +164,7 @@ class AddTaskModal extends Component {
                   taskInfo.state = this.props.config.state;
                   if (taskInfo.title.length > 1) this.addTask(taskInfo);
                   else this.setState({ titleError: true });
-                }}
-              >
+                }}>
                 Valider
               </button>
             </div>

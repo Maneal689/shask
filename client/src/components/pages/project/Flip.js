@@ -33,7 +33,7 @@ class Flip {
     elms = Array.from(elms);
     elms.forEach(elm => {
       let id = elm.getAttribute("id");
-      this.list[id] = elm.getBoundingClientRect();
+      if (!(id in this.list)) this.list[id] = elm.getBoundingClientRect();
     });
   }
 
