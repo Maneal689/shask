@@ -33,7 +33,9 @@ class Flip {
     elms = Array.from(elms);
     elms.forEach(elm => {
       let id = elm.getAttribute("id");
-      if (!(id in this.list)) this.list[id] = elm.getBoundingClientRect();
+      if (!(id in this.list)) {
+        this.list[id] = elm.getBoundingClientRect();
+      }
     });
   }
 
@@ -42,7 +44,9 @@ class Flip {
    * @param {Node} elm
    */
   removeElm(elm) {
-    let id = elm.getAttribute("id");
+    let id = null;
+    if (elm.getAttribute) id = elm.getAttribute("id");
+    else id = elm;
     delete this.list[id];
     elm.animate(...this.removeAnimation);
     let that = this;

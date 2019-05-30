@@ -115,6 +115,7 @@ class ProjectPage extends Component {
         <AddTaskModal
           id="addTaskModal"
           projectId={this.state.projectId}
+          myId={this.state.myId}
           username={this.state.username}
         />
         <EditTaskModal id="editTaskModal" />

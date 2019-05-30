@@ -28,8 +28,8 @@ class SimpleTodoList extends Component {
   componentDidUpdate() {
     let tasks = document.getElementsByClassName("simple-todo-task");
     if (tasks) {
+      this.flip.read(tasks);
       this.flip.animateMove();
-      window.setTimeout(() => this.flip.read(tasks), 250);
     }
   }
 
@@ -94,6 +94,8 @@ class SimpleTodoList extends Component {
       .then(res => res.json())
       .then(data => {
         if (data.status === "OK") {
+          // let key = task.id_simple_task + "SimpleTodoTask";
+          // this.flip.removeElm(key);
           let nList = this.props.list.filter(
             elm => elm.id_simple_task !== task.id_simple_task
           );
